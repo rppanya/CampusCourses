@@ -1,5 +1,7 @@
 import { Button, Form, Input, InputNumber, DatePicker } from "antd";
 import "antd/dist/reset.css";
+import React from "react";
+import { campusCoursesApi } from "../../Api/campusCoursesApi";
 
 const layout = {
   labelCol: {
@@ -21,87 +23,104 @@ const validateMessages = {
   },
 };
 
-const onFinish = (values) => {
-  console.log(values);
-};
+class RegistrationForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-export default function RegistrationForm() {
-  return (
-    <Form
-      {...layout}
-      name="nest-messages"
-      onFinish={onFinish}
-      labelCol={{ span: 8 }}
-      wrapperCol={{
-        span: 8,
-      }}
-      style={{
-        marginTop: 40,
-      }}
-      validateMessages={validateMessages}
-    >
-      <Form.Item
-        name={["user", "name"]}
-        label="ФИО"
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item label="Дата рождения">
-        <DatePicker />
-      </Form.Item>
+  handleSubmit(e) {
+    let formData = {
+      fullName: e.fullName,
+      birthDate: e.birthDate,
+      email: e.email,
+      password: e.password,
+      confirmPassword: e.confirmPassword,
+    };
+    console.log(formData)
+    //campusCoursesApi.registration(JSON.stringify(formData))
+  }
 
-      <Form.Item
-        name={["user", "email"]}
-        label="Email"
-        rules={[
-          {
-            type: "email",
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
-        label="Пароль"
-        name="password"
-        rules={[
-          {
-            required: true,
-            message: "Please input your password!",
-          },
-        ]}
-      >
-        <Input.Password />
-      </Form.Item>
-
-      <Form.Item
-        label="Повторите пароль"
-        name="password"
-        rules={[
-          {
-            required: true,
-            message: "Please input your password!",
-          },
-        ]}
-      >
-        <Input.Password />
-      </Form.Item>
-      <Form.Item
+  render() {
+    return (
+      <Form
+        {...layout}
+        name="nest-messages"
+        onFinish={this.handleSubmit}
+        labelCol={{ span: 8 }}
         wrapperCol={{
-          ...layout.wrapperCol,
-          offset: 8,
+          span: 8,
         }}
+        style={{
+          marginTop: 40,
+        }}
+        validateMessages={validateMessages}
       >
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
-  );
+        <Form.Item
+          name="fullName"
+          label="ФИО"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item label="Дата рождения" name="birthDate">
+          <DatePicker />
+        </Form.Item>
+
+        <Form.Item
+          name="email"
+          label="Email"
+          rules={[
+            {
+              type: "email",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          label="Пароль"
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "Please input your password!",
+            },
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
+
+        <Form.Item
+          label="Повторите пароль"
+          name="confirmPassword"
+          rules={[
+            {
+              required: true,
+              message: "Please input your password!",
+            },
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
+        <Form.Item
+          wrapperCol={{
+            ...layout.wrapperCol,
+            offset: 8,
+          }}
+        >
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+    );
+  }
 }
+
+export default RegistrationForm

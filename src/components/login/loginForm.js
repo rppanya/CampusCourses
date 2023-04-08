@@ -2,7 +2,7 @@ import { Button, Form, Input } from "antd";
 import "antd/dist/reset.css";
 import React from "react";
 import { connect } from "react-redux";
-import { loginThunkCreator } from "../../reducers/login-reducer";
+import { getProfileInfoThunkCreator, loginThunkCreator } from "../../reducers/auth-reducer";
 
 function mapStateToProps(state){ 
   return { auth: state.auth }
@@ -12,16 +12,14 @@ class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.emailRef = React.createRef();
-    this.passwordRef = React.createRef();
   }
 
   handleSubmit(e) {
     let formData = {
         email: e.email,
         password: e.password
-    }
-    loginThunkCreator(JSON.stringify(formData))
+    } 
+    this.props.loginThunkCreator(JSON.stringify(formData))
   }
 
   onChange(e) {
@@ -89,4 +87,4 @@ class LoginForm extends React.Component {
   }
 }
  
-export default connect(mapStateToProps, { loginThunkCreator })(LoginForm);
+export default connect(mapStateToProps, { loginThunkCreator, getProfileInfoThunkCreator })(LoginForm);

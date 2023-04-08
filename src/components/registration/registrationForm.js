@@ -2,6 +2,8 @@ import { Button, Form, Input, InputNumber, DatePicker } from "antd";
 import "antd/dist/reset.css";
 import React from "react";
 import { campusCoursesApi } from "../../Api/campusCoursesApi";
+import { registrationThunkCreator } from "../../reducers/auth-reducer";
+import { connect } from "react-redux";
 
 const layout = {
   labelCol: {
@@ -10,6 +12,10 @@ const layout = {
   wrapperCol: {
     span: 16,
   },
+};
+
+function mapStateToProps(state){ 
+  return { auth: state.auth }
 };
 
 const validateMessages = {
@@ -38,7 +44,7 @@ class RegistrationForm extends React.Component {
       confirmPassword: e.confirmPassword,
     };
     console.log(formData)
-    //campusCoursesApi.registration(JSON.stringify(formData))
+    this.props.registrationThunkCreator(JSON.stringify(formData))
   }
 
   render() {
@@ -123,4 +129,4 @@ class RegistrationForm extends React.Component {
   }
 }
 
-export default RegistrationForm
+export default connect(mapStateToProps, { registrationThunkCreator })(RegistrationForm);

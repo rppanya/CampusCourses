@@ -2,7 +2,7 @@ import { Button, Form, Input, DatePicker } from "antd";
 import "antd/dist/reset.css";
 import Title from "antd/es/typography/Title";
 import React from "react";
-import { changeProfileInfoThunkCreator, getProfileInfoThunkCreator } from "../../reducers/auth-reducer";
+import { changeProfileInfoThunkCreator, getProfileInfoThunkCreator } from "../../reducers/account-reducer";
 import { connect } from "react-redux";
 
 const layout = {
@@ -14,7 +14,7 @@ const layout = {
   },
 };
 function mapStateToProps(state){ 
-  return { auth: state.auth }
+  return { account: state.account }
 };
 
 class Profile extends React.Component {
@@ -28,13 +28,17 @@ class Profile extends React.Component {
         fullName: e.fullName,
         birthDate: e.birthDate
     } 
-    this.props.changeProfileInfoThunkCreator(formData, this.props.auth.token)
+    const token = localStorage.getItem('token')
+    this.props.changeProfileInfoThunkCreator(formData, token)
+  }
+  componentDidMount() {
+    const token = localStorage.getItem('token')
+    this.props.getProfileInfoThunkCreator(token)
   }
 
   render() {
     return (
       <Form
-        //disabled={true}
         name="login"
         labelCol={{ span: 8 }}
         wrapperCol={{
@@ -61,11 +65,11 @@ class Profile extends React.Component {
             },
           ]}
         >
-          <Input placeholder={this.props.auth.user.fullName} />
+          <Input placeholder={this.props.account.user.fullName} />
         </Form.Item>
 
         <Form.Item label="Дата рождения">
-          <DatePicker name="birthDate" placeholder={this.props.auth.user.birthDate} />
+          <DatePicker name="birthDate" placeholder={this.props.account.user.birthDate} />
         </Form.Item>
 
         <Form.Item
@@ -79,7 +83,7 @@ class Profile extends React.Component {
             },
           ]}
         >
-          <h1>{this.props.auth.user.email}</h1>
+          <h1>{this.props.account.user.email}</h1>
         </Form.Item>
         <Form.Item
           wrapperCol={{
@@ -96,4 +100,4 @@ class Profile extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, { changeProfileInfoThunkCreator })(Profile);
+export default connect(mapStateToProps, { changeProfileInfoThunkCreator, getProfileInfoThunkCreator })(Profile);

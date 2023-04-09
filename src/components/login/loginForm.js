@@ -2,10 +2,10 @@ import { Button, Form, Input } from "antd";
 import "antd/dist/reset.css";
 import React from "react";
 import { connect } from "react-redux";
-import { getProfileInfoThunkCreator, loginThunkCreator } from "../../reducers/auth-reducer";
+import { getProfileInfoThunkCreator, loginThunkCreator } from "../../reducers/account-reducer";
 
 function mapStateToProps(state){ 
-  return { auth: state.auth }
+  return { account: state.account }
 };
 
 class LoginForm extends React.Component {

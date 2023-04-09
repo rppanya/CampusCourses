@@ -1,9 +1,9 @@
 import {createStore, combineReducers, applyMiddleware} from 'redux';
-import authReducer from '../reducers/auth-reducer';
 import ThunkMiddleware from 'redux-thunk';
+import accountReducer from '../reducers/account-reducer';
 
 let reducers = combineReducers({
-    auth: authReducer
+    account: accountReducer
 });
 
 let store = createStore(reducers, applyMiddleware(ThunkMiddleware));

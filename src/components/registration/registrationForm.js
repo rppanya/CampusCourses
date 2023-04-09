@@ -15,7 +15,7 @@ const layout = {
 };
 
 function mapStateToProps(state){ 
-  return { auth: state.auth }
+  return { account: state.account }
 };
 
 const validateMessages = {

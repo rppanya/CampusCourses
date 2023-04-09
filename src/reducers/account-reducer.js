@@ -7,28 +7,29 @@ const REGISTRATION = "REGISTRATION"
 const LOGOUT = "LOGOUT"
 const GET_PROFILE_INFO = "GET_PROFILE_INFO"
 const CHANGE_PROFILE_INFO = "CHANGE_PROFILE_INFO"
+const GET_USERS_ROLES = "GET_USERS_ROLES"
 
 const initialState = {
     user: {
         fullName: "",
         email: "",
-        birthDate: ""
+        birthDate: "",
+        roles: {
+            isTeacher: "",
+            isStudent: "",
+            isAdmin: ""
+        }
     },
-    token : ""
 }
 
-const authReducer = (state = initialState, action) => {
+const accountReducer = (state = initialState, action) => {
     let newState = { ...state}
 
     switch(action.type) {
         case LOGIN:
-            console.log('login')
-            newState.token = action.token
             localStorage.setItem('token', action.token)
             return newState
         case REGISTRATION:
-            console.log('registration')
-            newState.token = action.token
             localStorage.setItem('token', action.token)
             return newState
         case GET_PROFILE_INFO:
@@ -42,15 +43,23 @@ const authReducer = (state = initialState, action) => {
             newState.user.birthDate = action.user.birthDate
             return newState
         case LOGOUT:
-            localStorage.setItem('token', '')
-            newState.token = ""
+            localStorage.removeItem('token')
             newState.user.fullName = ""
             newState.user.email = ""
             newState.user.birthDate = ""
             return newState
+        case GET_USERS_ROLES:
+            newState.user.roles.isAdmin = action.roles.isAdmin
+            newState.user.roles.isStudent = action.roles.isStudent
+            newState.user.roles.isTeacher = action.roles.isTeacher
+            return newState
         default :
             return newState
     }
+}
+
+export function getRolesActionCreator(roles) {
+    return {type: GET_USERS_ROLES, roles: roles}
 }
 
 export function loginActionCreator(token){
@@ -73,12 +82,23 @@ export function logoutActionCreator(){
     return {type: LOGOUT}
 }
 
+export function getRolesThunkCreator(token) {
+    return (dispatch) => {
+        campusCoursesApi.users.getUsersRoles(token).then(data => {
+            dispatch(getRolesActionCreator(data))
+        })
+    }
+}
+
 export function loginThunkCreator(loginData) {
     return (dispatch) => {
         campusCoursesApi.account.login(loginData).then(data => {
             dispatch(loginActionCreator(data.token))
             campusCoursesApi.account.getProfileInfo(data.token).then(userInfo => {
                 dispatch(getProfileInfoActionCreator(userInfo))
+                campusCoursesApi.users.getUsersRoles(data.token).then(roles => {
+                    dispatch(getRolesActionCreator(roles))
+                })
             })
         })
     }
@@ -95,7 +115,6 @@ export function registrationThunkCreator(registrationData) {
 export function getProfileInfoThunkCreator(token) {
     return (dispatch) => {
         campusCoursesApi.account.getProfileInfo(token).then(data => {
-            console.log(data)
             dispatch(getProfileInfoActionCreator(data))
         })
     }
@@ -117,4 +136,4 @@ export function logoutThunkCreator(token) {
     }
 }
 
-export default authReducer;
+export default accountReducer;

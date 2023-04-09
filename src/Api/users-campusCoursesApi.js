@@ -1,8 +1,8 @@
 import instance from "./baseUrl";
 
-const token = localStorage.getItem('token')
+//const token = localStorage.getItem('token')
 
-function getListOfAllUsers() {
+function getListOfAllUsers(token) {
     return instance
       .get('users', {
         headers: {
@@ -21,7 +21,7 @@ function getListOfAllUsers() {
       })
 }
 
-function getUsersRoles() {
+function getUsersRoles(token) {
     return instance
       .get('roles', {
         headers: {

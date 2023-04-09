@@ -24,10 +24,12 @@ const authReducer = (state = initialState, action) => {
         case LOGIN:
             console.log('login')
             newState.token = action.token
+            localStorage.setItem('token', action.token)
             return newState
         case REGISTRATION:
             console.log('registration')
             newState.token = action.token
+            localStorage.setItem('token', action.token)
             return newState
         case GET_PROFILE_INFO:
             newState.user.fullName = action.user.fullName
@@ -40,6 +42,7 @@ const authReducer = (state = initialState, action) => {
             newState.user.birthDate = action.user.birthDate
             return newState
         case LOGOUT:
+            localStorage.setItem('token', '')
             newState.token = ""
             newState.user.fullName = ""
             newState.user.email = ""
@@ -72,9 +75,9 @@ export function logoutActionCreator(){
 
 export function loginThunkCreator(loginData) {
     return (dispatch) => {
-        campusCoursesApi.login(loginData).then(data => {
+        campusCoursesApi.account.login(loginData).then(data => {
             dispatch(loginActionCreator(data.token))
-            campusCoursesApi.getProfileInfo(data.token).then(userInfo => {
+            campusCoursesApi.account.getProfileInfo(data.token).then(userInfo => {
                 dispatch(getProfileInfoActionCreator(userInfo))
             })
         })
@@ -83,7 +86,7 @@ export function loginThunkCreator(loginData) {
 
 export function registrationThunkCreator(registrationData) {
     return (dispatch) => {
-        campusCoursesApi.registration(registrationData).then(data => {
+        campusCoursesApi.account.registration(registrationData).then(data => {
             dispatch(registrationActionCreator(data.token))
         })
     }
@@ -91,7 +94,7 @@ export function registrationThunkCreator(registrationData) {
 
 export function getProfileInfoThunkCreator(token) {
     return (dispatch) => {
-        campusCoursesApi.getProfileInfo(token).then(data => {
+        campusCoursesApi.account.getProfileInfo(token).then(data => {
             console.log(data)
             dispatch(getProfileInfoActionCreator(data))
         })
@@ -100,7 +103,7 @@ export function getProfileInfoThunkCreator(token) {
 
 export function changeProfileInfoThunkCreator(data, token) {
     return (dispatch) => {
-        campusCoursesApi.changeProfileInfo(data, token).then(response => {
+        campusCoursesApi.account.changeProfileInfo(data, token).then(response => {
             dispatch(changeProfileInfoActionCreator(data))
         })
     }
@@ -108,7 +111,7 @@ export function changeProfileInfoThunkCreator(data, token) {
 
 export function logoutThunkCreator(token) {
     return (dispatch) => {
-        campusCoursesApi.logout(token).then(data => {
+        campusCoursesApi.account.logout(token).then(data => {
             dispatch(logoutActionCreator())
         })
     }

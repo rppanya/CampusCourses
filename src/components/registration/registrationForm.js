@@ -1,8 +1,8 @@
 import { Button, Form, Input, InputNumber, DatePicker } from "antd";
 import "antd/dist/reset.css";
 import React from "react";
-import { campusCoursesApi } from "../../Api/campusCoursesApi";
-import { registrationThunkCreator } from "../../reducers/auth-reducer";
+import { campusCoursesApi } from "../../Api/account-campusCoursesApi";
+import { registrationThunkCreator } from "../../reducers/account-reducer";
 import { connect } from "react-redux";
 
 const layout = {

@@ -1,9 +1,8 @@
 import instance from "./baseUrl";
 
 const currentUrl = 'groups'
-const token = localStorage.getItem('token')
 
-function getListOfGroups(){
+function getListOfGroups(token){
     return instance
       .get(`${currentUrl}`, {
         headers: {
@@ -14,6 +13,7 @@ function getListOfGroups(){
       })
       .then((response) => {
         if (response.status === 200) {
+          console.log(response.data)
           return response.data
         }
       })
@@ -22,7 +22,7 @@ function getListOfGroups(){
       })
 }
 
-function createGroup(name) {
+function createGroup(name, token) {
     return instance
         .post(`${currentUrl}`, name, {
             headers: {
@@ -41,7 +41,7 @@ function createGroup(name) {
         })
 }
 
-function editGroupName(id, name) {
+function editGroupName(id, name, token) {
     return instance
         .put(`${currentUrl}/${id}`, name, {
           headers: {
@@ -60,7 +60,7 @@ function editGroupName(id, name) {
         })
 } 
 
-function deleteGroup(id) {
+function deleteGroup(id, token) {
     return instance
         .delete(`${currentUrl}/${id}`, {
             headers: {
@@ -79,7 +79,7 @@ function deleteGroup(id) {
           })
 }
 
-function getListOfCoursesOfTheGroup(id) {
+function getListOfCoursesOfTheGroup(id, token) {
     return instance
     .get(`${currentUrl}/${id}`, {
       headers: {

@@ -7,11 +7,10 @@ import { Route, Routes, BrowserRouter as Router} from 'react-router-dom';
 import LoginForm from './components/login/loginForm';
 import RegistrationForm from './components/registration/registrationForm';
 import Profile from './components/profile/profile';
+import GroupsContainer from './components/coursesGroups/groupsContainer';
 
 
 const { Header, Content, Footer } = Layout;
-
-
 
 function App() {
   return (
@@ -22,7 +21,7 @@ function App() {
         <div className="site-layout-content">
           <Routes>
             <Route path="/" element={<div>Добро пожаловать в систему капусных курсов</div>}></Route>
-            <Route path="/groups" element={<div>Группы курсов</div>}></Route>
+            <Route path="/groups" element={<GroupsContainer/>}></Route>
             <Route path="/courses/my" element={<div>Мои курсы</div>}></Route>
             <Route path="/teaching" element={<div>Преподаваемые курсы</div>}></Route>
             <Route path="/profile" element={<Profile></Profile>}></Route>

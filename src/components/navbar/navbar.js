@@ -30,7 +30,7 @@ function Navbar(props) {
         { label: "Группы курсов", key: "/groups" },
         isStudent ? { label: "Мои курсы", key: "/courses/my" } : null,
         isTeacher ? { label: "Преподаваемые курсы", key: "/teaching" } : null,
-        { label: "username", key: "/profile" },
+        { label: props.account.user.email, key: "/profile" },
         { label: "Выход", key: "logout"}
       ])
     } else {
@@ -40,7 +40,7 @@ function Navbar(props) {
       ])
     }
       
-  }, [isStudent, isTeacher, token]);
+  }, [isStudent, isTeacher, token, props.account.user.email]);
 
 
   return (

@@ -98,7 +98,7 @@ function createNotification(id, notification) {
         })
 }
 
-function editStudentsMark(id, mark) {
+function editStudentsMark(id, mark, studentId) {
     return instance
         .post(`${currentUrl}/${id}/marks/${studentId}`, mark, {
             headers: {

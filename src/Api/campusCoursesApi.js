@@ -1,8 +1,11 @@
-import * as axios from 'axios'
+import { accountCampusCoursesApi } from "./account-campusCoursesApi"
+import { courseCampusCoursesApi } from "./course-campusCoursesApi"
+import { groupCampusCoursesApi } from "./group-campusCoursesApi"
+import { usersCampusCoursesApi } from "./users-campusCoursesApi"
 
-const baseURL = ''
-
-const instance = axios.create({
-    baseURL : baseURL
-});
-
+export const campusCoursesApi = {
+    account: accountCampusCoursesApi,
+    course: courseCampusCoursesApi,
+    group: groupCampusCoursesApi,
+    users: usersCampusCoursesApi
+}

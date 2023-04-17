@@ -8,15 +8,6 @@ function login(data) {
         "Accept": "application/json",
       },
     })
-    .then((response) => {
-      if (response.status === 200) {
-        console.log(response);
-        return response.data;
-      }
-    })
-    .catch((error) => {
-      console.log(error.response.data.error);
-    });
 }
 
 function registration(data) {
@@ -28,74 +19,36 @@ function registration(data) {
                 "Accept": "application/json",
               },
         })
-        .then((response) => {
-            if (response.status === 200) {
-                console.log(response);
-                return response.data;
-            }
-        })
-        .catch((error) => {
-            console.log(error.response.data.error)
-        })
 }
 
-function logout(token) {
+function logout() {
     return instance
         .post('logout', {}, {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
-                'Authorization': 'Bearer ' + token,
               },
         })
-        .then((response) => {
-            if (response.status === 200) {
-                return response
-            }
-        })
-        .catch((error) => {
-            console.log(error.response)
-        })
-
 }
 
-function getProfileInfo(token) {
+function getProfileInfo() {
   return instance
       .get('profile', {
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
-          'Authorization': 'Bearer ' + token,
         },
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.data
-        }
-      })
-      .catch((error) => {
-        console.log(error.response)
       })
 }
 
-function changeProfileInfo(data, token) {
-  console.log(token)
+function changeProfileInfo(data) {
   data = JSON.stringify(data)
   return instance
       .put('profile', data, {
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
-          'Authorization': 'Bearer ' + token,
         }
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          return response
-        }
-      })
-      .catch((error) => {
-        console.log(error.response)
       })
 }
 

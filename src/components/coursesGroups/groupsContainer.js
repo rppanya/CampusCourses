@@ -1,15 +1,13 @@
 import { connect } from "react-redux";
 import Groups from "./groups";
-import React from "react";
+import React, { useEffect } from "react";
 import { getGroupsThunkCreator } from "../../reducers/group-reducer";
 
-class MiddleGroupsComponent extends React.Component{
-    componentDidMount(){
-        this.props.getGroupsThunkCreator(localStorage.getItem('token'));
-    }
-    render(){
-        return(<Groups {...this.props}/>)
-    }
+function MiddleGroupsComponent(props){
+    useEffect(() => {
+        props.getGroupsThunkCreator();
+    }, []);
+    return(<Groups {...props}/>)
 } 
 
 function mapStateToProps(state){

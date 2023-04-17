@@ -1,9 +1,7 @@
-import { Button, Form, Input, InputNumber, DatePicker } from "antd";
+import { Button, Form, Input, InputNumber, DatePicker, message } from "antd";
 import "antd/dist/reset.css";
 import React from "react";
-import { campusCoursesApi } from "../../Api/account-campusCoursesApi";
-import { registrationThunkCreator } from "../../reducers/account-reducer";
-import { connect } from "react-redux";
+//import { date } from "../../helpers/date";
 
 const layout = {
   labelCol: {
@@ -14,28 +12,8 @@ const layout = {
   },
 };
 
-function mapStateToProps(state){ 
-  return { account: state.account }
-};
-
-const validateMessages = {
-  required: "${label} is required!",
-  types: {
-    email: "${label} is not a valid email!",
-    number: "${label} is not a valid number!",
-  },
-  number: {
-    range: "${label} must be between ${min} and ${max}",
-  },
-};
-
-class RegistrationForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleSubmit(e) {
+function RegistrationForm(props) {
+  const handleSubmit = (e) => {
     let formData = {
       fullName: e.fullName,
       birthDate: e.birthDate,
@@ -43,90 +21,105 @@ class RegistrationForm extends React.Component {
       password: e.password,
       confirmPassword: e.confirmPassword,
     };
-    console.log(formData)
-    this.props.registrationThunkCreator(JSON.stringify(formData))
-  }
+    props.registrationThunkCreator(JSON.stringify(formData));
+  };
 
-  render() {
-    return (
-      <Form
-        {...layout}
-        name="nest-messages"
-        onFinish={this.handleSubmit}
-        labelCol={{ span: 8 }}
-        wrapperCol={{
-          span: 8,
-        }}
-        style={{
-          marginTop: 40,
-        }}
-        validateMessages={validateMessages}
+  return (
+    <Form
+      {...layout}
+      name="nest-messages"
+      onFinish={handleSubmit}
+      labelCol={{ span: 8 }}
+      wrapperCol={{
+        span: 8,
+      }}
+      style={{
+        marginTop: 40,
+      }}
+    >
+      <Form.Item
+        name="fullName"
+        label="ФИО"
+        rules={[
+          {
+            required: true,
+            message: "Введите ФИО!",
+          },
+          {
+            pattern: /^[А-Яа-я- ]+$/,
+            message: "Некорректное ФИО!",
+          },
+        ]}
       >
-        <Form.Item
-          name="fullName"
-          label="ФИО"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item label="Дата рождения" name="birthDate">
-          <DatePicker />
-        </Form.Item>
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label="Дата рождения"
+        name="birthDate"
+        rules={[
+          {
+            required: true,
+            message: "Введите дату рождения!"
+          },
+        ]}
+      >
+        <DatePicker />
+      </Form.Item>
 
-        <Form.Item
-          name="email"
-          label="Email"
-          rules={[
-            {
-              type: "email",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
+      <Form.Item
+        name="email"
+        label="Email"
+        rules={[
+          {
+            type: "email",
+            message: "Некорректный email!"
+          },
+          {
+            required: true,
+            message: "Введите email!"
+          }
+        ]}
+      >
+        <Input />
+      </Form.Item>
 
-        <Form.Item
-          label="Пароль"
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "Please input your password!",
-            },
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
+      <Form.Item
+        label="Пароль"
+        name="password"
+        rules={[
+          {
+            required: true,
+            message: "Введите пароль!"
+          },
+        ]}
+      >
+        <Input.Password />
+      </Form.Item>
 
-        <Form.Item
-          label="Повторите пароль"
-          name="confirmPassword"
-          rules={[
-            {
-              required: true,
-              message: "Please input your password!",
-            },
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-        <Form.Item
-          wrapperCol={{
-            ...layout.wrapperCol,
-            offset: 8,
-          }}
-        >
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
-    );
-  }
+      <Form.Item
+        label="Повторите пароль"
+        name="confirmPassword"
+        rules={[
+          {
+            required: true,
+            message: "Повторите пароль!"
+          }
+        ]}
+      >
+        <Input.Password />
+      </Form.Item>
+      <Form.Item
+        wrapperCol={{
+          ...layout.wrapperCol,
+          offset: 8,
+        }}
+      >
+        <Button type="primary" htmlType="submit">
+          Зарегестрироваться
+        </Button>
+      </Form.Item>
+    </Form>
+  );
 }
 
-export default connect(mapStateToProps, { registrationThunkCreator })(RegistrationForm);
+export default RegistrationForm;

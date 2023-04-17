@@ -1,43 +1,24 @@
 import { Button, Form, Input, DatePicker } from "antd";
 import "antd/dist/reset.css";
 import Title from "antd/es/typography/Title";
-import React from "react";
-import { changeProfileInfoThunkCreator, getProfileInfoThunkCreator } from "../../reducers/account-reducer";
-import { connect } from "react-redux";
+import { useState } from "react";
+import { date } from "../../helpers/date";
 
-const layout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
-function mapStateToProps(state){ 
-  return { account: state.account }
-};
+function Profile(props) {
+  const [disabledForm, changeDeisabledForm] = useState(true);
 
-class Profile extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
 
-  handleSubmit(e) {
+  const handleSubmit = (e) => {
     let formData = {
-        fullName: e.fullName,
-        birthDate: e.birthDate
-    } 
-    const token = localStorage.getItem('token')
-    this.props.changeProfileInfoThunkCreator(formData, token)
-  }
-  componentDidMount() {
-    const token = localStorage.getItem('token')
-    this.props.getProfileInfoThunkCreator(token)
-  }
+      fullName: e.fullName,
+      birthDate: e.birthDate,
+    };
+    changeDeisabledForm(true)
+    props.changeProfileInfoThunkCreator(formData);
+  };
 
-  render() {
-    return (
+  return (
+    <div>
       <Form
         name="login"
         labelCol={{ span: 8 }}
@@ -50,9 +31,18 @@ class Profile extends React.Component {
         initialValues={{
           remember: true,
         }}
-        onFinish={this.handleSubmit}
-        
-        autoComplete="off"
+        onFinish={handleSubmit}
+        disabled={disabledForm}
+        fields={[
+          {
+            name: ["fullName"],
+            value: props.account.user.fullName,
+          },
+          {
+            name: ["birthDate"],
+            value: date.formatDate(props.account.user.birthDate),
+          },
+        ]}
       >
         <Title level={3}>Профиль</Title>
 
@@ -65,11 +55,13 @@ class Profile extends React.Component {
             },
           ]}
         >
-          <Input placeholder={this.props.account.user.fullName} />
+          <Input />
         </Form.Item>
 
-        <Form.Item label="Дата рождения">
-          <DatePicker name="birthDate" placeholder={this.props.account.user.birthDate} />
+        <Form.Item label="Дата рождения" name="birthDate">
+          <DatePicker disabledDate={date.disabledDate}
+          format={"YYYY-MM-DDTHH:mm:ss"}
+          />
         </Form.Item>
 
         <Form.Item
@@ -83,21 +75,31 @@ class Profile extends React.Component {
             },
           ]}
         >
-          <h1>{this.props.account.user.email}</h1>
+          <p>{props.account.user.email}</p>
         </Form.Item>
         <Form.Item
-          wrapperCol={{
-            ...layout.wrapperCol,
-            offset: 8,
+          style={{
+            display: disabledForm ? "none" : "inline-block",
           }}
         >
-          <Button type="primary" htmlType="">
-            Изменить
+          <Button type="primary" htmlType="submit">
+            Сохранить Изменения
           </Button>
         </Form.Item>
       </Form>
-    );
-  }
+      <Button
+        type="primary"
+        htmlType=""
+        style={{
+          margin: "10px",
+          display: !disabledForm ? "none" : "inline-block",
+        }}
+        onClick={() => changeDeisabledForm(false)}
+      >
+        Изменить
+      </Button>
+    </div>
+  );
 }
 
-export default connect(mapStateToProps, { changeProfileInfoThunkCreator, getProfileInfoThunkCreator })(Profile);
+export default Profile;

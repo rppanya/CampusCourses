@@ -41,3 +41,9 @@
   padding: 15px;
   border-radius: 0 0 8px 8px;
 }
+:where(.css-dev-only-do-not-override-mxhywb).ant-input-disabled, :where(.css-dev-only-do-not-override-mxhywb).ant-input[disabled] {
+  color: black;
+}
+:where(.css-dev-only-do-not-override-mxhywb).ant-picker .ant-picker-input >input-disabled, :where(.css-dev-only-do-not-override-mxhywb).ant-picker .ant-picker-input >input[disabled] {
+  color: black;
+}

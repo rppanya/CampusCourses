@@ -1,7 +1,7 @@
 import { Button, Form, Input, InputNumber, DatePicker, message } from "antd";
 import "antd/dist/reset.css";
 import React from "react";
-//import { date } from "../../helpers/date";
+import { date } from "../../helpers/date";
 
 const layout = {
   labelCol: {
@@ -63,7 +63,7 @@ function RegistrationForm(props) {
           },
         ]}
       >
-        <DatePicker />
+        <DatePicker disabledDate={date.disabledDate}/>
       </Form.Item>
 
       <Form.Item

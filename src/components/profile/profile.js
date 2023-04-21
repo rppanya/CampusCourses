@@ -60,7 +60,7 @@ function Profile(props) {
 
         <Form.Item label="Дата рождения" name="birthDate">
           <DatePicker disabledDate={date.disabledDate}
-          format={"YYYY-MM-DDTHH:mm:ss"}
+          format={"YYYY-MM-DD"}
           />
         </Form.Item>
 

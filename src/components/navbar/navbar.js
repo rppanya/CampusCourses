@@ -44,7 +44,7 @@ function Navbar(props) {
   ];
 
   useEffect(() => {
-    const currentLocation = window.location.pathname;
+    const currentLocation = "/" + window.location.pathname.split("/")[1];
     if ((
       !token &&
       !unauthorizeItems.find((item) => item.key === currentLocation)

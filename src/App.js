@@ -8,8 +8,7 @@ import LoginFormContainer from "./components/login/loginFormContainer";
 import RegistrationFormContainer from "./components/registration/registrationFormContainer";
 import ProfileContainer from "./components/profile/profileContainer";
 import CoursesContainer from "./components/courses/coursesContainer";
-import Course from "./components/courses/course";
-import CourseDetails from "./components/courseDetails/courseDetails";
+import CourseDetailsContainer from "./components/courseDetails/courseDetailsContainer";
 
 const { Content } = Layout;
 
@@ -29,6 +28,10 @@ function App() {
               <Route
                 path="/groups/:groupId"
                 element={<CoursesContainer></CoursesContainer>}
+              ></Route>
+              <Route
+                path="/courses/:courseId/details"
+                element={<CourseDetailsContainer></CourseDetailsContainer>}
               ></Route>
               <Route path="/courses/my" element={<div>Мои курсы</div>}></Route>
               <Route

@@ -32,6 +32,7 @@ function Navbar(props) {
     isTeacher ? { label: "Преподаваемые курсы", key: "/teaching" } : null,
     { label: props.account.user.email, key: "/profile" },
     { label: "Выход", key: "logout", style: { marginLeft: "auto" } },
+    { key: "/courses"}
   ];
   const unauthorizeItems = [
     {

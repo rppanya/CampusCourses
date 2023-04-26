@@ -1,0 +1,55 @@
+%flex-elemet-right {
+  display: flex;
+  margin-left: auto;
+}
+
+.flex_right {
+  @extend %flex-elemet-right;
+}
+
+.course_statuses {
+  display: block;
+  + .OpenForAssigning {
+    color: green;
+    &:after {
+      content: "Открыт для записи";
+    }
+  }
+  + .Started {
+    color: blue;
+    &:after {
+      content: "В процессе обучения";
+    }
+  }
+  + .Created {
+    color: grey;
+    &:after {
+      content: "Создан";
+    }
+  }
+  + .Finished {
+    color: red;
+    &:after {
+      content: "Закрыт";
+    }
+  }
+}
+
+.course_details {
+  font-size: 12px;
+  h2 {
+    margin-bottom: 0;
+    margin-left: 10px;
+    margin-top: 10px;
+    font-size: 25px;
+  }
+}
+
+.flex_bottom {
+  position: relative;
+  p {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 0;
+  }
+}

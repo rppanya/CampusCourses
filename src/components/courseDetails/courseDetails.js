@@ -1,10 +1,14 @@
 import { Button, Row, Col, Card, Badge } from "antd";
 import { useState } from "react";
+import StudentsContainer from "./studentsContainer";
+import styles from "./courseDetails.module.scss"
+
+
 const courseStatuses = {
-  open: <p style={{ color: "green" }}>Открыт для записи</p>,
-  inProcess: <p style={{ color: "blue" }}>В процессе обучения</p>,
-  created: <p style={{ color: "grey" }}>Создан</p>,
-  closed: <p style={{ color: "red" }}>Закрыт</p>,
+  "OpenForAssigning": <b className={styles.OpenForAssigning}></b>,
+  "Started": <b className={styles.Started}></b>,
+  "Created": <b className={styles.Created}></b>,
+  "Finished": <b className={styles.Finished}></b>,
 };
 
 const tabList = [
@@ -25,15 +29,6 @@ const tabList = [
     ),
   },
 ];
-const contentList = {
-  requirements: <p>content1</p>,
-  annotation: <p>content2</p>,
-  notifications: <p>content3</p>,
-};
-const contentListUsers = {
-    teachers: "teachers",
-    students: "students"
-}
 
 function CourseDetails(props) {
   const [activeTabKey1, setActiveTabKey1] = useState("tab1");
@@ -44,48 +39,55 @@ function CourseDetails(props) {
   const onTab1Change = (key) => {
     setActiveTabKey1(key);
   };
+  const contentList = {
+    requirements: props.requirements,
+    annotation: props.annotations,
+    //notifications: props.notifications,
+  };
+
+  const contentListUsers = {
+    teachers: "teachers",
+    students: (<StudentsContainer students={props.students}/>)
+}
+  console.log(props)
   return (
-    <div style={{ textAlign: "left" }}>
-      <h2>BIGDATA: ПРОГРАММНЫЕ МЕТОДЫ PHYTON3</h2>
-      <Row style={{ fontSize: "12px" }}>
-        <Col span={12}>
+    <div className={styles.course_details}>
+      <h2>{props.name}</h2>
+      <Row>
+        <Col className={styles.flex_bottom} span={12}>
           <p>Основные данные курса</p>
         </Col>
-        <Col style={{ display: "flex", marginLeft: "auto" }}>
-          <Button style={{ marginBottom: "10px" }}>Редактировать</Button>
+        <Col className={styles.flex_right}>
+          <Button>Редактировать</Button>
         </Col>
       </Row>
-      <Card hoverable={false} style={{ fontSize: "12px" }}>
+      <Card hoverable={false} >
         <Card.Grid hoverable={false} style={{ width: "100%" }}>
-          <b style={{ margin: "0" }}>Статус курса</b>
-          {courseStatuses.closed}
+          <b className={styles.course_statuses}>Статус курса</b>
+          {courseStatuses[props.status]}
         </Card.Grid>
         <Card.Grid hoverable={false} style={{ width: "50%" }}>
           <b>Учебный год</b>
-          <p>2022-2023</p>
+          <p>{props.startYear}</p>
         </Card.Grid>
         <Card.Grid hoverable={false} style={{ width: "50%" }}>
           <b>Семестр</b>
-          <p>Осенний</p>
+          <p>{props.semester}</p>
         </Card.Grid>
         <Card.Grid hoverable={false} style={{ width: "50%" }}>
           <b>Всего мест</b>
-          <p>100</p>
+          <p>{props.maximumStudentsCount}</p>
         </Card.Grid>
         <Card.Grid hoverable={false} style={{ width: "50%" }}>
           <b>Студентов зачислено</b>
-          <p>5</p>
+          <p>{props.studentsEnrolledCount}</p>
         </Card.Grid>
         <Card.Grid hoverable={false} style={{ width: "100%" }}>
           <b>Заявок на рассмотрении</b>
-          <p>30</p>
+          <p>{props.studentsInQueueCount}</p>
         </Card.Grid>
       </Card>
       <Card
-        style={{
-          width: "100%",
-          fontSize: "12px",
-        }}
         tabList={tabList}
         activeTabKey={activeTabKey1}
         onTabChange={onTab1Change}
@@ -93,10 +95,6 @@ function CourseDetails(props) {
         {contentList[activeTabKey1]}
       </Card>
       <Card
-        style={{
-          width: "100%",
-          fontSize: "12px",
-        }}
         tabList={[
           {
             key: "teachers",

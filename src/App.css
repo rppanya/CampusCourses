@@ -50,3 +50,7 @@ body{
 :where(.css-dev-only-do-not-override-mxhywb).ant-picker .ant-picker-input >input-disabled, :where(.css-dev-only-do-not-override-mxhywb).ant-picker .ant-picker-input >input[disabled] {
   color: black;
 }
+
+div {
+  text-align: left;
+}

@@ -3,7 +3,7 @@ import { getCoursesThunkCreator, getGroupsThunkCreator } from "../../reducers/gr
 import { useEffect } from "react";
 import Courses from "./courses";
 
-function MiddleCorsesComponent(props) {
+function MiddleCoursesComponent(props) {
   const groupId = window.location.pathname.split("/").pop();
   const index = props.group.groups.findIndex((e) => e.id === groupId)
   useEffect(() => {
@@ -18,7 +18,7 @@ function mapStateToProps(state) {
 }
 
 const CoursesContainer = connect(mapStateToProps, { getGroupsThunkCreator, getCoursesThunkCreator })(
-  MiddleCorsesComponent
+  MiddleCoursesComponent
 );
 
 export default CoursesContainer;

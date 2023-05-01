@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { getCourseDetailsThunkCreator } from "../../reducers/course-reducer";
+import { getCourseDetailsThunkCreator, signUpForCourseThunkCreator } from "../../reducers/course-reducer";
 import { useEffect } from "react";
 import CourseDetails from "./courseDetails";
 
@@ -8,7 +8,7 @@ function MiddleCourseDetailsComponent(props) {
   useEffect(() => {
     props.getCourseDetailsThunkCreator(courseId);
   }, []);
-  return <CourseDetails {...props.course}></CourseDetails>;
+  return <CourseDetails course={props.course} signUp={props.signUpForCourseThunkCreator}></CourseDetails>;
 }
 
 function mapStateToProps(state) {
@@ -17,6 +17,7 @@ function mapStateToProps(state) {
 
 const CourseDetailsContainer = connect(mapStateToProps, {
   getCourseDetailsThunkCreator,
+  signUpForCourseThunkCreator
 })(MiddleCourseDetailsComponent);
 
 export default CourseDetailsContainer;

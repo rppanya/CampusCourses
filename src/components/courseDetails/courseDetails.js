@@ -1,58 +1,32 @@
-import { Button, Row, Col, Card, Badge } from "antd";
-import { useState } from "react";
+import { Button, Row, Col, Card, Badge, Tabs, Tag, Space } from "antd";
 import StudentsContainer from "./studentsContainer";
-import styles from "./courseDetails.module.scss"
+import styles from "./courseDetails.module.scss";
 
 
-const courseStatuses = {
-  "OpenForAssigning": <b className={styles.OpenForAssigning}></b>,
-  "Started": <b className={styles.Started}></b>,
-  "Created": <b className={styles.Created}></b>,
-  "Finished": <b className={styles.Finished}></b>,
-};
 
-const tabList = [
-  {
-    key: "requirements",
-    tab: "Требования к курсу",
-  },
-  {
-    key: "annotation",
-    tab: "Аннотация",
-  },
-  {
-    key: "notifications",
-    tab: (
-      <Badge count={5} offset={[10, 10]}>
-        Уведомления
-      </Badge>
-    ),
-  },
-];
 
 function CourseDetails(props) {
-  const [activeTabKey1, setActiveTabKey1] = useState("tab1");
-  const [users, setActiveUsersBlock] = useState("teachers")
-  const onChangeUsers = (key) => {
-    setActiveUsersBlock(key);
+
+  const signUpForCourse = () => {
+    props.signUp(props.course.id);
   }
-  const onTab1Change = (key) => {
-    setActiveTabKey1(key);
-  };
-  const contentList = {
-    requirements: props.requirements,
-    annotation: props.annotations,
-    //notifications: props.notifications,
+
+
+  const courseStatuses = {
+    OpenForAssigning: (
+      <b className={styles.OpenForAssigning}>
+      <Button onClick={() => {signUpForCourse()}}>Записаться на курс</Button>
+      </b>
+    ),
+    Started: <b className={styles.Started}></b>,
+    Created: <b className={styles.Created}></b>,
+    Finished: <b className={styles.Finished}></b>
   };
 
-  const contentListUsers = {
-    teachers: "teachers",
-    students: (<StudentsContainer students={props.students}/>)
-}
-  console.log(props)
+  console.log(props);
   return (
     <div className={styles.course_details}>
-      <h2>{props.name}</h2>
+      <h2>{props.course.name}</h2>
       <Row>
         <Col className={styles.flex_bottom} span={12}>
           <p>Основные данные курса</p>
@@ -61,54 +35,86 @@ function CourseDetails(props) {
           <Button>Редактировать</Button>
         </Col>
       </Row>
-      <Card hoverable={false} >
+      <Card hoverable={false}>
         <Card.Grid hoverable={false} style={{ width: "100%" }}>
           <b className={styles.course_statuses}>Статус курса</b>
-          {courseStatuses[props.status]}
+          {courseStatuses[props.course.status]}
         </Card.Grid>
         <Card.Grid hoverable={false} style={{ width: "50%" }}>
           <b>Учебный год</b>
-          <p>{props.startYear}</p>
+          <p>{props.course.startYear}</p>
         </Card.Grid>
         <Card.Grid hoverable={false} style={{ width: "50%" }}>
           <b>Семестр</b>
-          <p>{props.semester}</p>
+          <p>{props.course.semester}</p>
         </Card.Grid>
         <Card.Grid hoverable={false} style={{ width: "50%" }}>
           <b>Всего мест</b>
-          <p>{props.maximumStudentsCount}</p>
+          <p>{props.course.maximumStudentsCount}</p>
         </Card.Grid>
         <Card.Grid hoverable={false} style={{ width: "50%" }}>
           <b>Студентов зачислено</b>
-          <p>{props.studentsEnrolledCount}</p>
+          <p>{props.course.studentsEnrolledCount}</p>
         </Card.Grid>
         <Card.Grid hoverable={false} style={{ width: "100%" }}>
           <b>Заявок на рассмотрении</b>
-          <p>{props.studentsInQueueCount}</p>
+          <p>{props.course.studentsInQueueCount}</p>
         </Card.Grid>
-      </Card>
-      <Card
-        tabList={tabList}
-        activeTabKey={activeTabKey1}
-        onTabChange={onTab1Change}
-      >
-        {contentList[activeTabKey1]}
-      </Card>
-      <Card
-        tabList={[
-          {
-            key: "teachers",
-            tab: "Преподаватели",
-          },
-          {
-            key: "students",
-            tab: "Студенты",
-          }
-        ]}
-        activeTabKey={users}
-        onTabChange={onChangeUsers}
-      >
-        {contentListUsers[users]}
+        <div style={{ margin: "20px", display: "block", width: "100%" }}>
+          <Tabs
+            defaultActiveKey="1"
+            type="card"
+            size={3}
+            items={[
+              {
+                key: "requirements",
+                label: "Требования к курсу",
+                children: (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: `${props.course.requirements}`,
+                    }}
+                  ></div>
+                ),
+              },
+              {
+                key: "annotation",
+                label: "Аннотация",
+                children: (
+                  <div
+                    dangerouslySetInnerHTML={{ __html: `${props.course.annotations}` }}
+                  ></div>
+                ),
+              },
+              {
+                key: "notifications",
+                label: (
+                  <Badge count={props.course.notifications.length} offset={[10, 10]}>
+                    Уведомления
+                  </Badge>
+                ),
+                children: props.course.notifications.map((element) => {
+                  return (
+                    <Tag
+                      style={{
+                        width: "100%",
+                        height: "30px",
+                        fontSize: "14px",
+                      }}
+                      color={element.isImportant ? "red" : null}
+                    >
+                      {element.text}
+                    </Tag>
+                  );
+                }),
+                //</Space>
+              },
+            ]}
+          />
+        </div>
+        <div style={{ margin: "20px", display: "block", width: "100%" }}>
+          <StudentsContainer students={props.course.students} />
+        </div>
       </Card>
     </div>
   );

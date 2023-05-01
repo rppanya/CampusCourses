@@ -10,18 +10,21 @@
 .course_statuses {
   display: block;
   + .OpenForAssigning {
+    display: inline-block;
     color: green;
     &:after {
       content: "Открыт для записи";
     }
   }
   + .Started {
+    display: inline-block;
     color: blue;
     &:after {
       content: "В процессе обучения";
     }
   }
   + .Created {
+    display: inline-block;
     color: grey;
     &:after {
       content: "Создан";
@@ -51,5 +54,12 @@
     position: absolute;
     bottom: 0;
     margin-bottom: 0;
+  }
+}
+
+.notifications_table {
+  width: 100%;
+  tr {
+    border-top: 1px solid #dddddd;
   }
 }

@@ -1,0 +1,29 @@
+.users_table {
+  width: 100%;
+  margin-bottom: 20px;
+  border-collapse: collapse;
+  td {
+    border-top: 1px solid #dddddd;
+    padding: 5px;
+    margin-bottom: 2px;
+    p {
+      margin: 0;
+    }
+  }
+
+  .InQueue {
+    .result {
+        display: none;
+      }
+
+  }
+  .Accepted {
+
+  }
+  .Declined {
+    .result {
+        display: none;
+      }
+
+  }
+}

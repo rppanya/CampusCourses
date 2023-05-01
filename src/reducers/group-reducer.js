@@ -30,12 +30,37 @@ const groupReducer = (state = initialState, action) => {
     }
 }
 
+
 function getCoursesActionCreator(id, courses) {
     return {type: GET_LIST_OF_COURSES, id: id, courses: courses}
 }
 
 function getGroupsActionCreator(groups) {
     return {type: GET_GROUPS, groups: groups}
+}
+
+export function createGroupThunkCreator(name) {
+    return () => {
+        campusCoursesApi.group.createGroup(name).then(data => {
+            getGroupsThunkCreator()
+        })
+    }
+}
+
+export function editGroupNameThunkCreator(id, name) {
+    return () => {
+        campusCoursesApi.group.editGroupName(id, name).then(data => {
+            getGroupsThunkCreator()
+        })
+    }
+}
+
+export function deleteGroupThunkCreator(id) {
+    return () => {
+        campusCoursesApi.group.deleteGroup(id).then(data => {
+            getGroupsThunkCreator()
+        })
+    }
 }
 
 export function getCoursesThunkCreator(id) {

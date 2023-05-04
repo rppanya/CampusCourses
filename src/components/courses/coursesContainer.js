@@ -10,11 +10,11 @@ function MiddleCoursesComponent(props) {
     props.getGroupsThunkCreator();
     props.getCoursesThunkCreator(groupId);
   }, []);
-  return <Courses {...props.group.groups[index]} />;
+  return <Courses {...props.group.groups[index]} isAdmin={props.isAdmin} />;
 }
 
 function mapStateToProps(state) {
-  return { group: state.group };
+  return { group: state.group, isAdmin: state.account.user.roles.isAdmin };
 }
 
 const CoursesContainer = connect(mapStateToProps, { getGroupsThunkCreator, getCoursesThunkCreator })(

@@ -9,6 +9,8 @@ import RegistrationFormContainer from "./components/registration/registrationFor
 import ProfileContainer from "./components/profile/profileContainer";
 import CoursesContainer from "./components/courses/coursesContainer";
 import CourseDetailsContainer from "./components/courseDetails/courseDetailsContainer";
+import MyCoursesContainer from "./components/courses/myCoursesContainer";
+import TeachingCoursesContainer from "./components/courses/teachingCoursesContainer";
 
 const { Content } = Layout;
 
@@ -33,10 +35,10 @@ function App() {
                 path="/courses/:courseId/details"
                 element={<CourseDetailsContainer></CourseDetailsContainer>}
               ></Route>
-              <Route path="/courses/my" element={<div>Мои курсы</div>}></Route>
+              <Route path="/courses/my" element={<MyCoursesContainer/>}></Route>
               <Route
                 path="/teaching"
-                element={<div>Преподаваемые курсы</div>}
+                element={<TeachingCoursesContainer/>}
               ></Route>
               <Route
                 path="/profile"

@@ -8,7 +8,7 @@ function MiddleCourseDetailsComponent(props) {
   useEffect(() => {
     props.getCourseDetailsThunkCreator(courseId);
   }, []);
-  return <CourseDetails course={props.course} signUp={props.signUpForCourseThunkCreator}></CourseDetails>;
+  return <CourseDetails course={props.course.courseDetails} signUp={props.signUpForCourseThunkCreator}></CourseDetails>;
 }
 
 function mapStateToProps(state) {

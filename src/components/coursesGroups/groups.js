@@ -10,6 +10,7 @@ function Groups(props) {
   };
   const handleOk = () => {
     props.createGroupThunkCreator(groupName)
+    setOpen(false);
   };
   const handleCancel = () => {
     setOpen(false);

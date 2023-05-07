@@ -1,82 +1,88 @@
-import { createStore } from "redux"
-import { campusCoursesApi } from "../Api/campusCoursesApi"
+import { createStore } from "redux";
+import { campusCoursesApi } from "../Api/campusCoursesApi";
 
-const GET_GROUPS = "GET_GROUPS"
-const GET_LIST_OF_COURSES = "GET_LIST_OF_COURSES"
+const GET_GROUPS = "GET_GROUPS";
+const GET_LIST_OF_COURSES = "GET_LIST_OF_COURSES";
 
 const initialState = {
-    groups: [
-        {
-            name: "",
-            id: "",
-            courses: []
-        }
-    ]
-}
+  groups: [
+    {
+      name: "",
+      id: "",
+      courses: [],
+    },
+  ],
+};
 
 const groupReducer = (state = initialState, action) => {
-    let newState = {...state}
-    switch(action.type) {
-        case GET_GROUPS:
-            newState.groups = action.groups
-            return newState
-        case GET_LIST_OF_COURSES:
-            const index = newState.groups.findIndex(e => e.id === action.id)
-            newState.groups[index].courses = action.courses
-            console.log("курсы")
-            return newState
-        default :
-            return newState
-    }
-}
-
+  let newState = { ...state };
+  switch (action.type) {
+    case GET_GROUPS:
+      newState.groups = action.groups;
+      return newState;
+    case GET_LIST_OF_COURSES:
+      const index = newState.groups.findIndex((e) => e.id === action.id);
+      newState.groups[index].courses = action.courses;
+      console.log("курсы");
+      return newState;
+    default:
+      return newState;
+  }
+};
 
 function getCoursesActionCreator(id, courses) {
-    return {type: GET_LIST_OF_COURSES, id: id, courses: courses}
+  return { type: GET_LIST_OF_COURSES, id: id, courses: courses };
 }
 
 function getGroupsActionCreator(groups) {
-    return {type: GET_GROUPS, groups: groups}
+  return { type: GET_GROUPS, groups: groups };
 }
 
 export function createGroupThunkCreator(name) {
-    return () => {
-        campusCoursesApi.group.createGroup(name).then(data => {
-            getGroupsThunkCreator()
-        })
-    }
+  return (dispatch) => {
+    campusCoursesApi.group.createGroup(name).then(() => {
+      campusCoursesApi.group.getListOfGroups().then((data) => {
+        dispatch(getGroupsActionCreator(data));
+      });
+    });
+  };
 }
 
 export function editGroupNameThunkCreator(id, name) {
-    return () => {
-        campusCoursesApi.group.editGroupName(id, name).then(data => {
-            getGroupsThunkCreator()
-        })
-    }
+  return (dispatch) => {
+    campusCoursesApi.group.editGroupName(id, name).then((data) => {
+      campusCoursesApi.group.getListOfGroups().then((data) => {
+        dispatch(getGroupsActionCreator(data));
+      });
+    });
+  };
 }
 
 export function deleteGroupThunkCreator(id) {
-    return () => {
-        campusCoursesApi.group.deleteGroup(id).then(data => {
-            getGroupsThunkCreator()
-        })
-    }
+  return (dispatch) => {
+    campusCoursesApi.group.deleteGroup(id).then(() => {
+      campusCoursesApi.group.getListOfGroups().then((data) => {
+        dispatch(getGroupsActionCreator(data));
+      });
+    });
+  };
 }
 
 export function getCoursesThunkCreator(id) {
-    return (dispatch) => {
-        campusCoursesApi.group.getListOfCoursesOfTheGroup(id).then(data => {
-            dispatch(getCoursesActionCreator(id, data))
-        })
-    }
+  return (dispatch) => {
+    campusCoursesApi.group.getListOfCoursesOfTheGroup(id).then((data) => {
+      dispatch(getCoursesActionCreator(id, data));
+    });
+  };
 }
 
 export function getGroupsThunkCreator() {
-    return (dispatch) => {
-        campusCoursesApi.group.getListOfGroups().then(data =>  {
-            dispatch(getGroupsActionCreator(data))
-        })
-    }
+  return (dispatch) => {
+    console.log("get");
+    campusCoursesApi.group.getListOfGroups().then((data) => {
+      dispatch(getGroupsActionCreator(data));
+    });
+  };
 }
 
-export default groupReducer
+export default groupReducer;

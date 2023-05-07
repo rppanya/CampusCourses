@@ -12,7 +12,8 @@ function getListOfGroups() {
 }
 
 function createGroup(name) {
-  return instance.post(`${currentUrl}`, name, {
+  console.log(name)
+  return instance.post(`${currentUrl}`, {"name": name}, {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
@@ -21,7 +22,7 @@ function createGroup(name) {
 }
 
 function editGroupName(id, name) {
-  return instance.put(`${currentUrl}/${id}`, name, {
+  return instance.put(`${currentUrl}/${id}`, {"name": name}, {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",

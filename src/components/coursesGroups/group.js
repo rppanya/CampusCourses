@@ -12,6 +12,7 @@ function Group(props) {
   };
   const handleOk = () => {
     props.editGroupNameThunkCreator(props.id, groupName);
+    setOpen(false);
   };
   const handleCancel = () => {
     setOpen(false);

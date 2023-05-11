@@ -1,22 +1,26 @@
 import { Button, Modal, Form, Radio, Select, Input } from "antd";
 import TextArea from "antd/es/input/TextArea";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function ModalCreateCourse(props) {
   const [open, setOpen] = useState(false);
   const showModal = () => {
     setOpen(true);
   };
-  const handleOk = () => {};
+  const handleOk = (data) => {
+    props.action(props.id, JSON.stringify(data));
+    setOpen(false);
+  };
   const handleCancel = () => {
     setOpen(false);
   };
+  const [form] = Form.useForm();
+  console.log(props)
+
   return (
     <div>
-      <h2 style={{ marginTop: "20px" }}>Группа - {props.name}</h2>
       <Button
-        style={{ display: props.isAdmin ? "inline-block" : "none" }}
         onClick={showModal}
       >
         Создать курс
@@ -24,11 +28,19 @@ function ModalCreateCourse(props) {
       <Modal
         title="Создать курс"
         open={open}
-        onOk={handleOk}
+        okText="Создать"
+        onOk={() => {
+          form.validateFields().then((values) => {
+            handleOk(values)
+          })
+          .catch((info) => {
+            console.log(info)
+          })
+        }}
         onCancel={handleCancel}
         cancelText="Отмена"
       >
-        <Form>
+        <Form form={form}>
           <Form.Item
             label="Название курса"
             name="name"
@@ -39,7 +51,7 @@ function ModalCreateCourse(props) {
               },
             ]}
           >
-            <Input defaultValue="Новый курс" placeholder="Новый курс" />
+            <Input placeholder="Новый курс" />
           </Form.Item>
 
           <Form.Item
@@ -52,7 +64,7 @@ function ModalCreateCourse(props) {
               },
             ]}
           >
-            <Input defaultValue="2023" placeholder="2023" />
+            <Input placeholder="2023" />
           </Form.Item>
 
           <Form.Item
@@ -65,7 +77,7 @@ function ModalCreateCourse(props) {
               },
             ]}
           >
-            <Input defaultValue="100" placeholder="100" />
+            <Input placeholder="100" />
           </Form.Item>
 
           <Form.Item name="semester" label="Семестр">
@@ -85,7 +97,13 @@ function ModalCreateCourse(props) {
 
           <Form.Item label="Основной преподаватель курса" name="mainTeacherId">
             <Select>
-              <Select.Option value="demo">Demo</Select.Option>
+              {
+                props.users.map((value) => {
+                  return (
+                    <Select.Option key={value.id} value={value.id}>{value.fullName}</Select.Option>
+                  )
+                })
+              }
             </Select>
           </Form.Item>
         </Form>
@@ -94,4 +112,4 @@ function ModalCreateCourse(props) {
   );
 }
 
-export default ModalCreateCourse
+export default ModalCreateCourse;

@@ -25,7 +25,7 @@ function signUpForCourse(id) {
 }
 
 function editCoursesStatus(id, status) {
-  return instance.post(`${currentUrl}/${id}/status`, status, {
+  return instance.post(`${currentUrl}/${id}/status`, {"status": status}, {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",

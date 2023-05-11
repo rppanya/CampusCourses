@@ -9,11 +9,17 @@
 
 .course_statuses {
   display: block;
-  + .OpenForAssigning {
-    display: inline-block;
-    color: green;
-    &:after {
-      content: "Открыт для записи";
+  margin-right: 10px;
+   + .OpenForAssigning {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    b {
+      margin-left: 0;
+      color: green;
+      &::before {
+        content: "Открыт для записи";
+      }
     }
   }
   + .Started {
@@ -39,12 +45,10 @@
 }
 
 .course_details {
-  font-size: 12px;
+  font-size: 16px;
   h2 {
-    margin-bottom: 0;
-    margin-left: 10px;
-    margin-top: 10px;
-    font-size: 25px;
+    margin: 30px;
+    margin-left: 0px;
   }
 }
 
@@ -52,8 +56,7 @@
   position: relative;
   p {
     position: absolute;
-    bottom: 0;
-    margin-bottom: 0;
+    margin-bottom: 10px;
   }
 }
 

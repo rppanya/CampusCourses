@@ -6,6 +6,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
+  //console.log(config)
   const token = localStorage.getItem("token");
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
@@ -16,11 +17,8 @@ instance.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    if (error.response.status === 401) {
-      console.log("No Auth 401!");
-    } else {
-      throw error;
-    }
+    console.log(error.response)
+    return error.response;
   }
 );
 

@@ -5,6 +5,7 @@ const GET_COURSE_DETAILS = "GET_COURSE_DETAILS";
 const SIGN_UP_FOR_COURSE = "SIGN_UP_FOR_COURSE";
 const GET_MY_COURSES = "GET_MY_COURSES";
 const GET_TEACHING_COURSES = "GET_TEACHING_COURSES";
+const EDIT_COURSE_INFO = "EDIT_COURSE_INFO";
 
 const initialState = {
   courseDetails: {
@@ -60,6 +61,8 @@ const courseReducer = (state = initialState, action) => {
     case GET_TEACHING_COURSES:
       newState.teachingCourses = action.teachingCourses;
       return newState;
+    case EDIT_COURSE_INFO:
+      return newState; 
     default:
       return newState;
   }
@@ -88,6 +91,28 @@ export function signUpForCourseThunkCreator(id) {
     });
   };
 }
+
+
+export function editCourseInfoThunkCreator(courseId, data) {
+  return (dispatch) => {
+    campusCoursesApi.course.editCourse(courseId, data).then(() => {
+      campusCoursesApi.course.getCourseInfo(courseId).then((data) => {
+        dispatch(getCourseDetailsActionCreator(data));
+      });
+    })
+  }
+}
+
+export function editCoursesStatusThunkCreator(courseId, status) {
+  return (dispatch) => {
+    campusCoursesApi.course.editCoursesStatus(courseId, status).then(() =>{
+      campusCoursesApi.course.getCourseInfo(courseId).then((data)=> {
+        dispatch(getCourseDetailsActionCreator(data))
+      })
+    })
+  }
+}
+
 
 export function getMyCoursesThunkCreator() {
   return (dispatch) => {

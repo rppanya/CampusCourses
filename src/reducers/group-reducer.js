@@ -22,7 +22,8 @@ const groupReducer = (state = initialState, action) => {
       return newState;
     case GET_LIST_OF_COURSES:
       const index = newState.groups.findIndex((e) => e.id === action.id);
-      newState.groups[index].courses = action.courses;
+      const allCourses = action.courses;
+      newState.groups[index].courses = allCourses;
       console.log("курсы");
       return newState;
     default:
@@ -68,11 +69,25 @@ export function deleteGroupThunkCreator(id) {
   };
 }
 
+export function createCourseThunkCreator(groupId, data) {
+  return (dispatch) => {
+    campusCoursesApi.course.createCourseForGroup(groupId, data).then(() => {
+      campusCoursesApi.group.getListOfCoursesOfTheGroup(groupId).then((courses) => {
+        dispatch(getCoursesActionCreator(groupId, courses));
+      });
+    })
+  }
+}
+
 export function getCoursesThunkCreator(id) {
   return (dispatch) => {
-    campusCoursesApi.group.getListOfCoursesOfTheGroup(id).then((data) => {
-      dispatch(getCoursesActionCreator(id, data));
+    campusCoursesApi.group.getListOfGroups().then((data) => {
+      campusCoursesApi.group.getListOfCoursesOfTheGroup(id).then((courses) => {
+        dispatch(getGroupsActionCreator(data));
+        dispatch(getCoursesActionCreator(id, courses));
+      });
     });
+    
   };
 }
 

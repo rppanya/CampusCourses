@@ -3,11 +3,13 @@ import ThunkMiddleware from 'redux-thunk';
 import accountReducer from '../reducers/account-reducer';
 import groupReducer from '../reducers/group-reducer';
 import courseReducer from '../reducers/course-reducer';
+import usersReducer from '../reducers/users-reducer';
 
 let reducers = combineReducers({
     account: accountReducer,
     group: groupReducer,
-    course: courseReducer
+    course: courseReducer,
+    users: usersReducer
 });
 
 let store = createStore(reducers, applyMiddleware(ThunkMiddleware));

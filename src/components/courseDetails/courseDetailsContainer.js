@@ -3,7 +3,8 @@ import {
   getCourseDetailsThunkCreator,
   signUpForCourseThunkCreator,
   editCourseInfoThunkCreator,
-  editCoursesStatusThunkCreator
+  editCoursesStatusThunkCreator,
+  createNotificationThunkCreator
 } from "../../reducers/course-reducer";
 import { useEffect } from "react";
 import CourseDetails from "./courseDetails";
@@ -20,6 +21,7 @@ function MiddleCourseDetailsComponent(props) {
       editCourseInfoThunkCreator={props.editCourseInfoThunkCreator}
       isAdmin={props.isAdmin}
       editCoursesStatusThunkCreator={props.editCoursesStatusThunkCreator}
+      createNotificationThunkCreator={props.createNotificationThunkCreator}
     ></CourseDetails>
   );
 }
@@ -32,7 +34,8 @@ const CourseDetailsContainer = connect(mapStateToProps, {
   getCourseDetailsThunkCreator,
   signUpForCourseThunkCreator,
   editCourseInfoThunkCreator,
-  editCoursesStatusThunkCreator
+  editCoursesStatusThunkCreator,
+  createNotificationThunkCreator
 })(MiddleCourseDetailsComponent);
 
 export default CourseDetailsContainer;

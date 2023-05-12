@@ -15,6 +15,7 @@ import styles from "./courseDetails.module.scss";
 import ModalCreateCourse from "../modals/modalCreateCourse";
 import ModalContainer from "../modals/modalContainer";
 import { useState } from "react";
+import Notifications from "./notificationContainer";
 
 function CourseDetails(props) {
   const signUpForCourse = () => {
@@ -191,29 +192,13 @@ function CourseDetails(props) {
                   </Badge>
                 ),
                 children: (
-                  <div>
-                    <Button
-                      onClick={showModal}
-                    >
-                      Создать уведомление
-                    </Button>
-                    {props.course.notifications.map((element, index) => {
-                      return (
-                        <Tag
-                          style={{
-                            width: "100%",
-                            height: "30px",
-                            fontSize: "14px",
-                            marginTop: "2px",
-                          }}
-                          color={element.isImportant ? "red" : null}
-                          key={index}
-                        >
-                          {element.text}
-                        </Tag>
-                      );
-                    })}
-                  </div>
+                  <Notifications
+                    createNotificationThunkCreator={
+                      props.createNotificationThunkCreator
+                    }
+                    notifications={props.course.notifications}
+                    id={props.course.id}
+                  ></Notifications>
                 ),
               },
             ]}

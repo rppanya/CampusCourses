@@ -3,8 +3,9 @@ import TextArea from "antd/es/input/TextArea";
 
 import { useState } from "react";
 
-function ModalCreateCourse(props) {
+function ModalEditCourse(props) {
   const [open, setOpen] = useState(false);
+  const [formValues, setFormValues] = useState({});
   const showModal = () => {
     setOpen(true);
   };
@@ -16,14 +17,15 @@ function ModalCreateCourse(props) {
     setOpen(false);
   };
   const [form] = Form.useForm();
-
   return (
     <div>
-      <Button onClick={showModal}>Создать курс</Button>
+      <Button type="primary" onClick={showModal}>
+        Редактировать
+      </Button>
       <Modal
-        title="Создать курс"
+        title="Редактировать курс"
         open={open}
-        okText="Создать"
+        okText="Сохранить"
         onOk={() => {
           form.validateFields().then((values) => {
             handleOk(values);
@@ -32,8 +34,17 @@ function ModalCreateCourse(props) {
         onCancel={handleCancel}
         cancelText="Отмена"
       >
-        <Form form={form}>
+        <Form
+          form={form}
+          onChange={(values) => {
+            form.validateFields().then(() => {
+              setFormValues(values);
+            });
+          }}
+          initialValues={props.courseInfo}
+        >
           <Form.Item
+            style={{ display: props.isAdmin ? null : "none" }}
             label="Название курса"
             name="name"
             rules={[
@@ -47,6 +58,7 @@ function ModalCreateCourse(props) {
           </Form.Item>
 
           <Form.Item
+            style={{ display: props.isAdmin ? null : "none" }}
             label="Год начала курса"
             name="startYear"
             rules={[
@@ -68,10 +80,11 @@ function ModalCreateCourse(props) {
               }),
             ]}
           >
-            <Input id="startYear" placeholder="2023" type="number"/>
+            <Input placeholder="2023" id="startYear" type="number" />
           </Form.Item>
 
           <Form.Item
+            style={{ display: props.isAdmin ? null : "none" }}
             label="Общее количество мест"
             name="maximumStudentsCount"
             rules={[
@@ -93,12 +106,13 @@ function ModalCreateCourse(props) {
               }),
             ]}
           >
-            <Input id="maximumStudentsCount" placeholder="100" type="number" />
+            <Input placeholder="100" id="maximumStudentsCount" type="number" />
           </Form.Item>
 
           <Form.Item
             name="semester"
             label="Семестр"
+            style={{ display: props.isAdmin ? null : "none" }}
             rules={[
               {
                 required: true,
@@ -106,7 +120,7 @@ function ModalCreateCourse(props) {
               },
             ]}
           >
-            <Radio.Group>
+            <Radio.Group defaultValue={props.courseInfo.semester}>
               <Radio value="Autumn">Осенний</Radio>
               <Radio value="Spring">Весенний</Radio>
             </Radio.Group>
@@ -139,6 +153,7 @@ function ModalCreateCourse(props) {
           </Form.Item>
 
           <Form.Item
+            style={{ display: props.isAdmin ? null : "none" }}
             label="Основной преподаватель курса"
             name="mainTeacherId"
             rules={[
@@ -148,15 +163,13 @@ function ModalCreateCourse(props) {
               },
             ]}
           >
-            <Select>
-              {props.users.map((value) => {
-                return (
-                  <Select.Option key={value.id} value={value.id}>
-                    {value.fullName}
-                  </Select.Option>
-                );
-              })}
-            </Select>
+            <Select
+              options={props.users.map((value) => ({
+                key: value.id,
+                value: value.id,
+                label: value.fullName,
+              }))}
+            ></Select>
           </Form.Item>
         </Form>
       </Modal>
@@ -164,4 +177,4 @@ function ModalCreateCourse(props) {
   );
 }
 
-export default ModalCreateCourse;
+export default ModalEditCourse;

@@ -6,7 +6,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
-  //console.log(config)
+  //console.log(config.method, config.url)
   const token = localStorage.getItem("token");
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
@@ -14,10 +14,11 @@ instance.interceptors.request.use((config) => {
 
 instance.interceptors.response.use(
   (response) => {
+    //console.log(response.data)
     return response.data;
   },
   (error) => {
-    console.log(error.response)
+    console.log(error.response);
     return error.response;
   }
 );

@@ -11,7 +11,6 @@ function login(data) {
 }
 
 function registration(data) {
-  console.log("registrationApi")
     return instance
         .post('registration', data, {
             headers: {

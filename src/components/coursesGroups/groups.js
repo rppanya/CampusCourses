@@ -1,6 +1,7 @@
-import { Button, Input, Modal } from "antd";
+import { Button, Input, Modal, Form } from "antd";
 import Group from "./group";
 import { useState } from "react";
+import FormItem from "antd/es/form/FormItem";
 
 function Groups(props) {
   const [open, setOpen] = useState(false);
@@ -9,16 +10,20 @@ function Groups(props) {
     setOpen(true);
   };
   const handleOk = () => {
-    props.createGroupThunkCreator(groupName)
-    setOpen(false);
+    form.validateFields().then(() => {
+      props.createGroupThunkCreator(groupName);
+      setOpen(false);
+    });
   };
   const handleCancel = () => {
     setOpen(false);
   };
+  const [form] = Form.useForm();
   return (
     <div>
       <h2 style={{ marginTop: "20px" }}>Группы кампусных курсов</h2>
       <Button
+        type="primary"
         style={{ display: props.isAdmin ? "inline-block" : "none" }}
         onClick={showModal}
       >
@@ -31,12 +36,21 @@ function Groups(props) {
         onCancel={handleCancel}
         cancelText="Отмена"
       >
-        <Input
-          placeholder="Название группы"
-          onChange={(e) => {
-            changeGroupName(e.target.value);
+        <Form
+          form={form}
+          onChange={() => {
+            form.validateFields().then((values) => {
+              changeGroupName(values);
+            });
           }}
-        />
+        >
+          <FormItem
+            name="name"
+            rules={[{ required: true, message: "Введите название группы" }]}
+          >
+            <Input placeholder="Название группы" />
+          </FormItem>
+        </Form>
       </Modal>
       {props.group.groups.map((value) => {
         return (

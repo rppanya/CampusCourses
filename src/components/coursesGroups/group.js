@@ -1,22 +1,40 @@
-import { Button, Card, Row, Col, Modal, Input, Space } from "antd";
+import { Button, Card, Row, Col, Modal, Input, Space, Form } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import FormItem from "antd/es/form/FormItem";
 
 function Group(props) {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [groupName, changeGroupName] = useState(props.title);
-  const showModal = () => {
-    setOpen(true);
+  const showModalEdit = () => {
+    setOpenEdit(true);
   };
-  const handleOk = () => {
-    props.editGroupNameThunkCreator(props.id, groupName);
-    setOpen(false);
+  const handleOkEdit = () => {
+    form.validateFields().then(() => {
+      props.editGroupNameThunkCreator(props.id, groupName);
+      setOpenEdit(false);
+    });
   };
-  const handleCancel = () => {
-    setOpen(false);
+  const handleCancelEdit = () => {
+    setOpenEdit(false);
   };
+  const [form] = Form.useForm();
+
+  const [openDelete, setOpenDelete] = useState(false);
+
+  const showModalDelete = () => {
+    setOpenDelete(true);
+  };
+  const handleOkDelete = () => {
+    props.deleteGroupThunkCreator(props.id);
+    setOpenDelete(false);
+  };
+  const handleCancelDelete = () => {
+    setOpenDelete(false);
+  };
+
   return (
     <>
       <Card
@@ -47,7 +65,7 @@ function Group(props) {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  showModal();
+                  showModalEdit();
                 }}
               ></Button>
             </Col>
@@ -58,7 +76,7 @@ function Group(props) {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  props.deleteGroupThunkCreator(props.id)
+                  showModalDelete();
                 }}
               ></Button>
             </Col>
@@ -67,18 +85,39 @@ function Group(props) {
       </Card>
       <Modal
         title="Редактировать группу"
-        open={open}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        open={openEdit}
+        onOk={handleOkEdit}
+        onCancel={handleCancelEdit}
         cancelText="Отмена"
       >
-        <Input
-          placeholder="Название группы"
-          defaultValue={props.title}
-          onChange={(e) => {
-            changeGroupName(e.target.value);
+        <Form
+          form={form}
+          onChange={() => {
+            form.validateFields().then((values) => {
+              changeGroupName(values);
+            });
           }}
-        />
+        >
+          <FormItem
+            name="name"
+            rules={[{ required: true, message: "Введите название группы" }]}
+          >
+            <Input placeholder="Название группы" defaultValue={props.title} />
+          </FormItem>
+        </Form>
+      </Modal>
+      <Modal
+        title="Удалить группу"
+        open={openDelete}
+        onOk={handleOkDelete}
+        onCancel={handleCancelDelete}
+        cancelText="Отмена"
+        okText="Да"
+      >
+        <h4>
+          Вы не сможете отменить это действие. Вы действительно хотите удалить
+          группу?
+        </h4>
       </Modal>
     </>
   );

@@ -8,7 +8,6 @@ function MiddleMyCoursesComponent(props) {
     useEffect(() => {
         props.getMyCoursesThunkCreator();
     }, []);
-    console.log(props)
     return <Courses courses={props.course.myCourses} isAdmin={props.isAdmin}/>
 }
 

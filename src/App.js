@@ -1,7 +1,7 @@
 import "./App.css";
 import { Layout } from "antd";
 import "antd/dist/reset.css";
-import Navbar from "./components/navbar/navbar";
+import NavbarContainer from "./components/navbar/navbarContainer";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import GroupsContainer from "./components/coursesGroups/groupsContainer";
 import LoginFormContainer from "./components/login/loginFormContainer";
@@ -18,7 +18,7 @@ function App() {
   return (
     <div className="App">
       <Layout className="layout">
-        <Navbar></Navbar>
+        <NavbarContainer></NavbarContainer>
         <Content style={{ padding: "0 50px" }}>
           <div className="site-layout-content">
             <Routes>

@@ -3,10 +3,13 @@ const baseURL = "https://camp-courses.api.kreosoft.space/";
 
 const instance = axios.create({
   baseURL: baseURL,
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+  },
 });
 
 instance.interceptors.request.use((config) => {
-  //console.log(config.method, config.url)
   const token = localStorage.getItem("token");
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
@@ -14,12 +17,10 @@ instance.interceptors.request.use((config) => {
 
 instance.interceptors.response.use(
   (response) => {
-    //console.log(response.data)
     return response.data;
   },
   (error) => {
-    console.log(error.response);
-    return error.response;
+    return {error: error.response, isError: true};
   }
 );
 

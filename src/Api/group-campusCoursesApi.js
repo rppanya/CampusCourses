@@ -3,48 +3,23 @@ import instance from "./baseUrl";
 const currentUrl = "groups";
 
 function getListOfGroups() {
-  return instance.get(`${currentUrl}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-  });
+  return instance.get(`${currentUrl}`);
 }
 
 function createGroup(name) {
-  return instance.post(`${currentUrl}`, name, {
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-  });
+  return instance.post(`${currentUrl}`, name);
 }
 
 function editGroupName(id, name) {
-  return instance.put(`${currentUrl}/${id}`, name, {
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-  });
+  return instance.put(`${currentUrl}/${id}`, name);
 }
 
 function deleteGroup(id) {
-  return instance.delete(`${currentUrl}/${id}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-  });
+  return instance.delete(`${currentUrl}/${id}`);
 }
 
 function getListOfCoursesOfTheGroup(id) {
-  return instance.get(`${currentUrl}/${id}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-  });
+  return instance.get(`${currentUrl}/${id}`);
 }
 
 export const groupCampusCoursesApi = {

@@ -1,21 +1,11 @@
 import instance from "./baseUrl";
 
 function getListOfAllUsers() {
-  return instance.get("users", {
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-  });
+  return instance.get("users");
 }
 
 function getUsersRoles() {
-  return instance.get("roles", {
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-  });
+  return instance.get("roles");
 }
 
 export const usersCampusCoursesApi = {

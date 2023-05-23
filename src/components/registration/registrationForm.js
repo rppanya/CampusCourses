@@ -1,18 +1,21 @@
-import { Button, Form, Input, InputNumber, DatePicker, message } from "antd";
-import "antd/dist/reset.css";
 import React from "react";
+
+import { Button, Form, Input, DatePicker } from "antd";
+import "antd/dist/reset.css";
+
 import { date } from "../../helpers/date";
 
-const layout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
-
 function RegistrationForm(props) {
+  const [form] = Form.useForm();
+  const layout = {
+    labelCol: {
+      span: 8,
+    },
+    wrapperCol: {
+      span: 8,
+    },
+  };
+
   const handleSubmit = (e) => {
     let formData = {
       fullName: e.fullName,
@@ -26,13 +29,9 @@ function RegistrationForm(props) {
 
   return (
     <Form
+      form={form}
       {...layout}
-      name="nest-messages"
       onFinish={handleSubmit}
-      labelCol={{ span: 8 }}
-      wrapperCol={{
-        span: 8,
-      }}
       style={{
         marginTop: 40,
       }}
@@ -59,11 +58,11 @@ function RegistrationForm(props) {
         rules={[
           {
             required: true,
-            message: "Введите дату рождения!"
+            message: "Введите дату рождения!",
           },
         ]}
       >
-        <DatePicker disabledDate={date.disabledDate}/>
+        <DatePicker disabledDate={date.disabledDate} />
       </Form.Item>
 
       <Form.Item
@@ -72,12 +71,12 @@ function RegistrationForm(props) {
         rules={[
           {
             type: "email",
-            message: "Некорректный email!"
+            message: "Некорректный email!",
           },
           {
             required: true,
-            message: "Введите email!"
-          }
+            message: "Введите email!",
+          },
         ]}
       >
         <Input />
@@ -89,7 +88,12 @@ function RegistrationForm(props) {
         rules={[
           {
             required: true,
-            message: "Введите пароль!"
+            message: "Введите пароль!",
+          },
+          {
+            min: 6,
+            max: 32,
+            message: "Пароль должен содержать от 6 до 32 символов!",
           },
         ]}
       >
@@ -102,8 +106,16 @@ function RegistrationForm(props) {
         rules={[
           {
             required: true,
-            message: "Повторите пароль!"
-          }
+            message: "Повторите пароль!",
+          },
+          ({ getFieldValue }) => ({
+            validator(_, value) {
+              if (!value || getFieldValue("password") === value) {
+                return Promise.resolve();
+              }
+              return Promise.reject(new Error("Пароли не совпадают!"));
+            },
+          }),
         ]}
       >
         <Input.Password />

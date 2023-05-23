@@ -1,26 +1,25 @@
-import { Button, Form, Input, DatePicker } from "antd";
-import "antd/dist/reset.css";
-import Title from "antd/es/typography/Title";
 import { useState } from "react";
+
+import { Button, Form, Input, DatePicker } from "antd";
+import Title from "antd/es/typography/Title";
+import "antd/dist/reset.css";
+
 import { date } from "../../helpers/date";
 
 function Profile(props) {
   const [disabledForm, changeDeisabledForm] = useState(true);
-
-
   const handleSubmit = (e) => {
     let formData = {
       fullName: e.fullName,
       birthDate: e.birthDate,
     };
-    changeDeisabledForm(true)
+    changeDeisabledForm(true);
     props.changeProfileInfoThunkCreator(formData);
   };
 
   return (
     <div>
       <Form
-        name="login"
         labelCol={{ span: 8 }}
         wrapperCol={{
           span: 8,
@@ -44,7 +43,9 @@ function Profile(props) {
           },
         ]}
       >
-        <Title level={3}>Профиль</Title>
+        <Title level={3} style={{ textAlign: "center" }}>
+          Профиль
+        </Title>
 
         <Form.Item
           name="fullName"
@@ -53,15 +54,17 @@ function Profile(props) {
             {
               required: true,
             },
+            {
+              pattern: /^[А-Яа-я- ]+$/,
+              message: "Некорректное ФИО!",
+            },
           ]}
         >
           <Input />
         </Form.Item>
 
         <Form.Item label="Дата рождения" name="birthDate">
-          <DatePicker disabledDate={date.disabledDate}
-          format={"YYYY-MM-DD"}
-          />
+          <DatePicker disabledDate={date.disabledDate} format={"YYYY-MM-DD"} />
         </Form.Item>
 
         <Form.Item
@@ -79,7 +82,8 @@ function Profile(props) {
         </Form.Item>
         <Form.Item
           style={{
-            display: disabledForm ? "none" : "inline-block",
+            justifyContent: "center",
+            display: disabledForm ? "none" : "flex",
           }}
         >
           <Button type="primary" htmlType="submit">
@@ -91,8 +95,8 @@ function Profile(props) {
         type="primary"
         htmlType=""
         style={{
-          margin: "10px",
-          display: !disabledForm ? "none" : "inline-block",
+          margin: "auto",
+          display: !disabledForm ? "none" : "block",
         }}
         onClick={() => changeDeisabledForm(false)}
       >

@@ -1,11 +1,10 @@
+import { useState } from "react";
+
 import { Button, Modal, Form, Radio, Select, Input } from "antd";
 import TextArea from "antd/es/input/TextArea";
 
-import { useState } from "react";
-
 function ModalEditCourse(props) {
   const [open, setOpen] = useState(false);
-  const [formValues, setFormValues] = useState({});
   const showModal = () => {
     setOpen(true);
   };
@@ -17,6 +16,7 @@ function ModalEditCourse(props) {
     setOpen(false);
   };
   const [form] = Form.useForm();
+  
   return (
     <div>
       <Button type="primary" onClick={showModal}>
@@ -36,10 +36,8 @@ function ModalEditCourse(props) {
       >
         <Form
           form={form}
-          onChange={(values) => {
-            form.validateFields().then(() => {
-              setFormValues(values);
-            });
+          onChange={() => {
+            form.validateFields();
           }}
           initialValues={props.courseInfo}
         >
@@ -49,7 +47,7 @@ function ModalEditCourse(props) {
             name="name"
             rules={[
               {
-                required: true,
+                required: props.isAdmin ? true : false,
                 message: "Поле обязательно для заполнения!",
               },
             ]}
@@ -63,7 +61,7 @@ function ModalEditCourse(props) {
             name="startYear"
             rules={[
               {
-                required: true,
+                required: props.isAdmin ? true : false,
                 message: "Поле обязательно для заполнения!",
               },
               ({ getFieldValue }) => ({
@@ -89,7 +87,7 @@ function ModalEditCourse(props) {
             name="maximumStudentsCount"
             rules={[
               {
-                required: true,
+                required: props.isAdmin ? true : false,
                 message: "Поле обязательно для заполнения!",
               },
               ({ getFieldValue }) => ({
@@ -115,7 +113,7 @@ function ModalEditCourse(props) {
             style={{ display: props.isAdmin ? null : "none" }}
             rules={[
               {
-                required: true,
+                required: props.isAdmin ? true : false,
                 message: "Поле обязательно для заполнения!",
               },
             ]}
@@ -158,7 +156,7 @@ function ModalEditCourse(props) {
             name="mainTeacherId"
             rules={[
               {
-                required: true,
+                required: props.isAdmin ? true : false,
                 message: "Поле обязательно для заполнения!",
               },
             ]}

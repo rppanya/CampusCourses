@@ -1,8 +1,10 @@
-import { createStore } from "redux";
-import { campusCoursesApi } from "../Api/campusCoursesApi";
+import { campusCoursesApi } from "../../api/campusCoursesApi";
+import {
+  setErrorActionCreator,
+  setSuccessActionCreator,
+} from "./errors-reducer";
 
 const GET_COURSE_DETAILS = "GET_COURSE_DETAILS";
-const SIGN_UP_FOR_COURSE = "SIGN_UP_FOR_COURSE";
 const GET_MY_COURSES = "GET_MY_COURSES";
 const GET_TEACHING_COURSES = "GET_TEACHING_COURSES";
 const EDIT_COURSE_INFO = "EDIT_COURSE_INFO";
@@ -55,8 +57,6 @@ const courseReducer = (state = initialState, action) => {
     case GET_COURSE_DETAILS:
       newState.courseDetails.courseInfo = action.courseDetails;
       return newState;
-    case SIGN_UP_FOR_COURSE:
-      return newState;
     case GET_MY_COURSES:
       newState.myCourses = action.myCourses;
       return newState;
@@ -70,10 +70,6 @@ const courseReducer = (state = initialState, action) => {
       return newState;
   }
 };
-
-function signUpForCourseActionCreator() {
-  return { type: SIGN_UP_FOR_COURSE };
-}
 
 function getMyCoursesActionCreator(myCourses) {
   return { type: GET_MY_COURSES, myCourses: myCourses };
@@ -93,18 +89,32 @@ function editCourseInfoActionCreator(courseDetails) {
 
 export function signUpForCourseThunkCreator(id) {
   return (dispatch) => {
-    campusCoursesApi.course.signUpForCourse(id).then(() => {
-      campusCoursesApi.course.getCourseInfo(id).then((data) => {
-        dispatch(getCourseDetailsActionCreator(data));
-      });
+    campusCoursesApi.course.signUpForCourse(id).then((data) => {
+      if (!data.isError) {
+        campusCoursesApi.course.getCourseInfo(id).then((data) => {
+          dispatch(getCourseDetailsActionCreator(data));
+          campusCoursesApi.course
+            .getListOfCoursesUserHasSignedUp()
+            .then((data) => {
+              dispatch(getMyCoursesActionCreator(data));
+            });
+        });
+      } else {
+        dispatch(setErrorActionCreator(data.error));
+      }
     });
   };
 }
 
 export function editCourseInfoThunkCreator(courseId, data) {
   return (dispatch) => {
-    campusCoursesApi.course.editCourse(courseId, data).then((courseInfo) => {
-      dispatch(editCourseInfoActionCreator(courseInfo));
+    campusCoursesApi.course.editCourse(courseId, data).then((data) => {
+      if (!data.isError) {
+        dispatch(editCourseInfoActionCreator(data));
+        dispatch(setSuccessActionCreator("Данные обновлены!"));
+      } else {
+        dispatch(setErrorActionCreator(data.error));
+      }
     });
   };
 }
@@ -113,30 +123,42 @@ export function addCourseTeacherThunkCreator(courseId, userId) {
   return (dispatch) => {
     campusCoursesApi.course
       .addCoursesTeacherRoleToUser(courseId, userId)
-      .then(() => {
-        campusCoursesApi.course.getCourseInfo(courseId).then((data) => {
-          dispatch(getCourseDetailsActionCreator(data));
-        });
+      .then((data) => {
+        if (!data.isError) {
+          campusCoursesApi.course.getCourseInfo(courseId).then((data) => {
+            dispatch(getCourseDetailsActionCreator(data));
+          });
+        } else {
+          dispatch(setErrorActionCreator(data.error));
+        }
       });
   };
 }
 
 export function editCoursesStatusThunkCreator(courseId, status) {
   return (dispatch) => {
-    campusCoursesApi.course.editCoursesStatus(courseId, status).then(() => {
-      campusCoursesApi.course.getCourseInfo(courseId).then((data) => {
-        dispatch(getCourseDetailsActionCreator(data));
-      });
+    campusCoursesApi.course.editCoursesStatus(courseId, status).then((data) => {
+      if (!data.isError) {
+        campusCoursesApi.course.getCourseInfo(courseId).then((data) => {
+          dispatch(getCourseDetailsActionCreator(data));
+        });
+      } else {
+        dispatch(setErrorActionCreator(data.error));
+      }
     });
   };
 }
 
 export function createNotificationThunkCreator(courseId, data) {
   return (dispatch) => {
-    campusCoursesApi.course.createNotification(courseId, data).then(() => {
-      campusCoursesApi.course.getCourseInfo(courseId).then((data) => {
-        dispatch(getCourseDetailsActionCreator(data));
-      });
+    campusCoursesApi.course.createNotification(courseId, data).then((data) => {
+      if (!data.isError) {
+        campusCoursesApi.course.getCourseInfo(courseId).then((data) => {
+          dispatch(getCourseDetailsActionCreator(data));
+        });
+      } else {
+        dispatch(setErrorActionCreator(data.error));
+      }
     });
   };
 }
@@ -145,10 +167,14 @@ export function editStudentsStatusThunkCreator(courseId, studentId, status) {
   return (dispatch) => {
     campusCoursesApi.course
       .editStudentsStatus(courseId, status, studentId)
-      .then(() => {
-        campusCoursesApi.course.getCourseInfo(courseId).then((data) => {
-          dispatch(getCourseDetailsActionCreator(data));
-        });
+      .then((data) => {
+        if (!data.isError) {
+          campusCoursesApi.course.getCourseInfo(courseId).then((data) => {
+            dispatch(getCourseDetailsActionCreator(data));
+          });
+        } else {
+          dispatch(setErrorActionCreator(data.error));
+        }
       });
   };
 }
@@ -157,10 +183,14 @@ export function editStudentsMarkThunkCreator(courseId, studentId, mark) {
   return (dispatch) => {
     campusCoursesApi.course
       .editStudentsMark(courseId, mark, studentId)
-      .then(() => {
-        campusCoursesApi.course.getCourseInfo(courseId).then((data) => {
-          dispatch(getCourseDetailsActionCreator(data));
-        });
+      .then((data) => {
+        if (!data.isError) {
+          campusCoursesApi.course.getCourseInfo(courseId).then((data) => {
+            dispatch(getCourseDetailsActionCreator(data));
+          });
+        } else {
+          dispatch(setErrorActionCreator(data.error));
+        }
       });
   };
 }
@@ -168,7 +198,11 @@ export function editStudentsMarkThunkCreator(courseId, studentId, mark) {
 export function getMyCoursesThunkCreator() {
   return (dispatch) => {
     campusCoursesApi.course.getListOfCoursesUserHasSignedUp().then((data) => {
-      dispatch(getMyCoursesActionCreator(data));
+      if (!data.isError) {
+        dispatch(getMyCoursesActionCreator(data));
+      } else {
+        dispatch(setErrorActionCreator(data.error));
+      }
     });
   };
 }
@@ -176,7 +210,11 @@ export function getMyCoursesThunkCreator() {
 export function getTeachingCoursesThunkCreator() {
   return (dispatch) => {
     campusCoursesApi.course.getListOfCoursesUserIsTeaching().then((data) => {
-      dispatch(getTeachingCoursesActionCreator(data));
+      if (!data.isError) {
+        dispatch(getTeachingCoursesActionCreator(data));
+      } else {
+        dispatch(setErrorActionCreator(data.error));
+      }
     });
   };
 }
@@ -184,7 +222,11 @@ export function getTeachingCoursesThunkCreator() {
 export function getCourseDetailsThunkCreator(id) {
   return (dispatch) => {
     campusCoursesApi.course.getCourseInfo(id).then((data) => {
-      dispatch(getCourseDetailsActionCreator(data));
+      if (!data.isError) {
+        dispatch(getCourseDetailsActionCreator(data));
+      } else {
+        dispatch(setErrorActionCreator(data.error));
+      }
     });
   };
 }

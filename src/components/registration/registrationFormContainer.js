@@ -1,6 +1,8 @@
-import { connect } from "react-redux";
-import { registrationThunkCreator } from "../../reducers/account-reducer";
 import React from "react";
+
+import { connect } from "react-redux";
+
+import { registrationThunkCreator } from "../../store/reducers/account-reducer";
 import RegistrationForm from "./registrationForm";
 
 function MiddleRegistrationFormComponent(props) {

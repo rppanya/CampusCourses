@@ -1,11 +1,15 @@
+import { useEffect } from "react";
 import { connect } from "react-redux";
+
 import {
   getCoursesThunkCreator,
   getGroupsThunkCreator,
-} from "../../reducers/group-reducer";
-import { createCourseThunkCreator } from "../../reducers/group-reducer";
-import { getListOfUsersThunkCreator } from "../../reducers/users-reducer";
-import { useEffect } from "react";
+} from "../../store/reducers/group-reducer";
+import {
+  createCourseThunkCreator,
+  deleteCourseThunkCreator,
+} from "../../store/reducers/group-reducer";
+import { getListOfUsersThunkCreator } from "../../store/reducers/users-reducer";
 import Courses from "./courses";
 
 function MiddleCoursesComponent(props) {
@@ -14,21 +18,25 @@ function MiddleCoursesComponent(props) {
   useEffect(() => {
     props.getCoursesThunkCreator(groupId);
   }, []);
-  useEffect(() => {
-  }, [props.group.groups[index]])
+  useEffect(() => {}, [props.group.groups[index]]);
   return (
     <Courses
       {...props.group.groups[index]}
       isAdmin={props.isAdmin}
       createCourseThunkCreator={props.createCourseThunkCreator}
       getListOfUsersThunkCreator={props.getListOfUsersThunkCreator}
+      deleteCourseThunkCreator={props.deleteCourseThunkCreator}
       users={props.users}
     />
   );
 }
 
 function mapStateToProps(state) {
-  return { group: state.group, isAdmin: state.account.user.roles.isAdmin, users: state.users.users };
+  return {
+    group: state.group,
+    isAdmin: state.account.user.roles.isAdmin,
+    users: state.users.users,
+  };
 }
 
 const CoursesContainer = connect(mapStateToProps, {
@@ -36,6 +44,7 @@ const CoursesContainer = connect(mapStateToProps, {
   getCoursesThunkCreator,
   createCourseThunkCreator,
   getListOfUsersThunkCreator,
+  deleteCourseThunkCreator,
 })(MiddleCoursesComponent);
 
 export default CoursesContainer;

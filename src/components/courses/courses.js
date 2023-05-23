@@ -17,7 +17,15 @@ function Courses(props) {
       ) : null}
       {props.courses
         ? props.courses.map((element) => {
-            return <Course course={element} key={element.id} />;
+            return (
+              <Course
+                course={element}
+                key={element.id}
+                id={props.id}
+                isAdmin={props.isAdmin}
+                deleteCourseThunkCreator={props.deleteCourseThunkCreator}
+              />
+            );
           })
         : null}
     </div>

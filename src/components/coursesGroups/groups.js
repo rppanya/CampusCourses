@@ -1,7 +1,9 @@
-import { Button, Input, Modal, Form } from "antd";
-import Group from "./group";
 import { useState } from "react";
+
+import { Button, Input, Modal, Form } from "antd";
 import FormItem from "antd/es/form/FormItem";
+
+import Group from "./group";
 
 function Groups(props) {
   const [open, setOpen] = useState(false);
@@ -19,6 +21,7 @@ function Groups(props) {
     setOpen(false);
   };
   const [form] = Form.useForm();
+
   return (
     <div>
       <h2 style={{ marginTop: "20px" }}>Группы кампусных курсов</h2>
@@ -61,6 +64,7 @@ function Groups(props) {
             isAdmin={props.isAdmin}
             editGroupNameThunkCreator={props.editGroupNameThunkCreator}
             deleteGroupThunkCreator={props.deleteGroupThunkCreator}
+            error={props.errors}
           ></Group>
         );
       })}

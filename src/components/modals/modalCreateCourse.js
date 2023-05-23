@@ -1,7 +1,7 @@
+import { useState } from "react";
+
 import { Button, Modal, Form, Radio, Select, Input } from "antd";
 import TextArea from "antd/es/input/TextArea";
-
-import { useState } from "react";
 
 function ModalCreateCourse(props) {
   const [open, setOpen] = useState(false);
@@ -68,7 +68,7 @@ function ModalCreateCourse(props) {
               }),
             ]}
           >
-            <Input id="startYear" placeholder="2023" type="number"/>
+            <Input id="startYear" placeholder="2023" type="number" />
           </Form.Item>
 
           <Form.Item

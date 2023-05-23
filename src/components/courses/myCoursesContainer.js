@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { connect } from "react-redux";
-import { getMyCoursesThunkCreator } from "../../reducers/course-reducer";
+
+import { getMyCoursesThunkCreator } from "../../store/reducers/course-reducer";
 import Courses from "./courses";
 
-
 function MiddleMyCoursesComponent(props) {
-    useEffect(() => {
-        props.getMyCoursesThunkCreator();
-    }, []);
-    return <Courses courses={props.course.myCourses} isAdmin={props.isAdmin}/>
+  useEffect(() => {
+    props.getMyCoursesThunkCreator();
+  }, []);
+  return <Courses courses={props.course.myCourses} isAdmin={props.isAdmin} />;
 }
 
 function mapStateToProps(state) {

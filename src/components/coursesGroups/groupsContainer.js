@@ -1,12 +1,14 @@
-import { connect } from "react-redux";
-import Groups from "./groups";
 import React, { useEffect } from "react";
+
+import { connect } from "react-redux";
+
 import {
   getGroupsThunkCreator,
   createGroupThunkCreator,
   editGroupNameThunkCreator,
   deleteGroupThunkCreator,
-} from "../../reducers/group-reducer";
+} from "../../store/reducers/group-reducer";
+import Groups from "./groups";
 
 function MiddleGroupsComponent(props) {
   useEffect(() => {
@@ -16,7 +18,10 @@ function MiddleGroupsComponent(props) {
 }
 
 function mapStateToProps(state) {
-  return { group: state.group, isAdmin: state.account.user.roles.isAdmin };
+  return {
+    group: state.group,
+    isAdmin: state.account.user.roles.isAdmin,
+  };
 }
 
 const GroupsContainer = connect(mapStateToProps, {

@@ -1,10 +1,12 @@
+import { React, useEffect } from "react";
+
 import { connect } from "react-redux";
-import Profile from "./profile";
+
 import {
   changeProfileInfoThunkCreator,
   getProfileInfoThunkCreator,
-} from "../../reducers/account-reducer";
-import { useEffect } from "react";
+} from "../../store/reducers/account-reducer";
+import Profile from "./profile";
 
 function MiddleProfileComponent(props) {
   useEffect(() => {

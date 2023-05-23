@@ -1,9 +1,12 @@
+import React from "react";
+
 import { connect } from "react-redux";
+
 import {
   logoutThunkCreator,
   getRolesThunkCreator,
   getProfileInfoThunkCreator
-} from "../../reducers/account-reducer";
+} from "../../store/reducers/account-reducer";
 import Navbar from "./navbar";
 
 function MiddleNavbarContainer(props) {

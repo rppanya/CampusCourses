@@ -1,12 +1,15 @@
-import { Select } from "antd";
 import { useEffect, useState } from "react";
 
+import { Select } from "antd";
+
 export let teacherId = "";
+
 function UsersSelect(props) {
   const [teacher, setTeacher] = useState("");
   useEffect(() => {
-    teacherId = teacher
+    teacherId = teacher;
   }, [teacher]);
+
   return (
     <Select style={{ width: "100%" }} onChange={setTeacher}>
       {props.users.map((value) => {
@@ -19,6 +22,5 @@ function UsersSelect(props) {
     </Select>
   );
 }
-
 
 export default UsersSelect;

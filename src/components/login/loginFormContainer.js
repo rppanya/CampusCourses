@@ -1,7 +1,9 @@
-import { connect } from "react-redux";
 import React from "react";
+
+import { connect } from "react-redux";
+
+import { loginThunkCreator } from "../../store/reducers/account-reducer";
 import LoginForm from "./loginForm";
-import { loginThunkCreator } from "../../reducers/account-reducer";
 
 function MiddleLoginFormContainer(props) {
   return <LoginForm {...props} />;

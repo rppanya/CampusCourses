@@ -1,9 +1,10 @@
 import { connect } from "react-redux";
+
 import {
   editStudentsStatusThunkCreator,
   editStudentsMarkThunkCreator,
   addCourseTeacherThunkCreator,
-} from "../../../reducers/course-reducer";
+} from "../../../store/reducers/course-reducer";
 import Users from "./users";
 
 function MiddleUsersComponent(props) {
@@ -16,7 +17,7 @@ function mapStateToProps(state) {
     students: state.course.courseDetails.courseInfo.students,
     teachers: state.course.courseDetails.courseInfo.teachers,
     courseId: state.course.courseDetails.courseInfo.id,
-    account: state.account.user.email
+    email: state.account.user.email,
   };
 }
 

@@ -1,5 +1,6 @@
-import { Button, Modal, Radio } from "antd";
 import { useState } from "react";
+
+import { Button, Modal, Radio } from "antd";
 
 function Student(props) {
   return (
@@ -9,6 +10,7 @@ function Student(props) {
           student={props.student}
           email={props.email}
           isAdmin={props.isAdmin}
+          isTeacher={props.isTeacher}
           editStudentsMarkThunkCreator={props.editStudentsMarkThunkCreator}
           courseId={props.courseId}
         />
@@ -29,6 +31,12 @@ function StudentAccepted(props) {
   const [open, setOpen] = useState(false);
   const [markType, setMarkType] = useState("");
   const [mark, setMark] = useState("");
+
+  const marks = {
+    "NotDefined": "Нет данных",
+    "Passed": "Пройдено",
+    "Failed": "Зафейлено"
+  }
 
   const onChange = (e) => {
     setMark(e.target.value);
@@ -52,36 +60,46 @@ function StudentAccepted(props) {
     <tr>
       <td>
         <b>{props.student.name}</b>
-        <p>Статус - {props.student.status}</p>
+        <div style={{display: "flex"}}>
+          <p>Статус:  </p>
+          <b style={{ color: "green", marginLeft: "4px" }}> принят в группу</b>
+        </div>
+
         <p>{props.student.email}</p>
       </td>
-      
-        {props.isAdmin || props.email == props.student.email ? (
-          <>
-            <td>
-              <a
-                onClick={() => {
+
+      {props.isAdmin ||
+      props.isTeacher ||
+      props.email == props.student.email ? (
+        <>
+          <td>
+            <a
+              onClick={() => {
+                if (props.isAdmin || props.isTeacher) {
                   setMarkType("Midterm");
                   showModal(markType);
-                }}
-              >
-                Промежуточная аттестация
-              </a>
-              <p>{props.student.midtermResult}</p>
-            </td>
-            <td>
-              <a
-                onClick={() => {
+                }
+              }}
+            >
+              Промежуточная аттестация
+            </a>
+            <p>{marks[props.student.midtermResult]}</p>
+          </td>
+          <td>
+            <a
+              onClick={() => {
+                if (props.isAdmin || props.isTeacher) {
                   setMarkType("Final");
                   showModal();
-                }}
-              >
-                Финальная аттестация
-              </a>
-              <p>{props.student.finalResult}</p>
-            </td>
-          </>
-        ) : null}
+                }
+              }}
+            >
+              Финальная аттестация
+            </a>
+            <p>{marks[props.student.finalResult]}</p>
+          </td>
+        </>
+      ) : null}
 
       <Modal
         title={markType}
@@ -112,7 +130,10 @@ function StudentInQueue(props) {
     <tr>
       <td>
         <b>{props.student.name}</b>
-        <p>Статус - {props.student.status}</p>
+        <div style={{display: "flex"}}>
+          <p>Статус:  </p>
+          <b style={{ color: "blue", marginLeft: "4px" }}> в очереди</b>
+        </div>
         <p>{props.student.email}</p>
       </td>
       <td style={{ position: "absolute", right: "0" }}>
@@ -141,7 +162,10 @@ function StudentDeclined(props) {
     <tr>
       <td>
         <b>{props.student.name}</b>
-        <p>Статус - {props.student.status}</p>
+        <div style={{display: "flex"}}>
+          <p>Статус:  </p>
+          <b style={{ color: "red", marginLeft: "4px" }}> отклонен</b>
+        </div>
         <p>{props.student.email}</p>
       </td>
     </tr>

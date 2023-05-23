@@ -1,8 +1,9 @@
 import { connect } from "react-redux";
+
 import {
   signUpForCourseThunkCreator,
   editCoursesStatusThunkCreator,
-} from "../../../reducers/course-reducer";
+} from "../../../store/reducers/course-reducer";
 import CoursesStatus from "./coursesStatus";
 
 function MiddleCoursesStatusComponent(props) {
@@ -10,7 +11,10 @@ function MiddleCoursesStatusComponent(props) {
 }
 
 function mapStateToProps(state) {
-  return { course: state.course.courseDetails.courseInfo, isAdmin: state.account.user.roles.isAdmin };
+  return {
+    course: state.course.courseDetails.courseInfo,
+    isAdmin: state.account.user.roles.isAdmin,
+  };
 }
 
 const CoursesStatusContainer = connect(mapStateToProps, {
@@ -18,4 +22,4 @@ const CoursesStatusContainer = connect(mapStateToProps, {
   editCoursesStatusThunkCreator,
 })(MiddleCoursesStatusComponent);
 
-export default CoursesStatusContainer
+export default CoursesStatusContainer;

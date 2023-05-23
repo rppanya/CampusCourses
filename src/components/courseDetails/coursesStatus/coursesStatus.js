@@ -1,5 +1,6 @@
-import { Button, Modal, Select, Row, Form } from "antd";
 import { useState } from "react";
+
+import { Button, Modal, Select, Row, Form } from "antd";
 import styles from ".././css/courseDetails.module.scss";
 import FormItem from "antd/es/form/FormItem";
 
@@ -16,7 +17,7 @@ function CoursesStatus(props) {
         <Button
           type="primary"
           style={{
-            display: "block",
+            display: !props.isStudent && !props.isTeacher ? "block" : "none",
             marginLeft: "10px",
             marginRight: "10px",
             marginTop: "10px",
@@ -32,6 +33,7 @@ function CoursesStatus(props) {
     Started: <b className={styles.Started}></b>,
     Finished: <b className={styles.Finished}></b>,
   };
+
   const numbersOfCourseStatuses = {
     Created: 0,
     OpenForAssigning: 1,
@@ -53,6 +55,7 @@ function CoursesStatus(props) {
   };
   const [form] = Form.useForm();
   const statusNumber = numbersOfCourseStatuses[props.course.status];
+
   return (
     <Row>
       <div
@@ -66,7 +69,7 @@ function CoursesStatus(props) {
         <b>Статус курса</b>
         <Button
           style={{
-            display: props.isAdmin ? "flex" : "none",
+            display: props.isAdmin || props.isTeacher ? "flex" : "none",
             marginLeft: "auto",
           }}
           onClick={showModal}
@@ -92,16 +95,28 @@ function CoursesStatus(props) {
               }}
               style={{ width: "100%" }}
             >
-              <Select.Option key="Created" value="Created" disabled >
+              <Select.Option key="Created" value="Created" disabled>
                 Создан
               </Select.Option>
-              <Select.Option key="OpenForAssigning" value="OpenForAssigning" disabled={statusNumber>1 ? true : false}>
+              <Select.Option
+                key="OpenForAssigning"
+                value="OpenForAssigning"
+                disabled={statusNumber > 1 ? true : false}
+              >
                 Открыт для записи
               </Select.Option>
-              <Select.Option key="Started" value="Started" disabled={statusNumber>2 ? true : false}>
+              <Select.Option
+                key="Started"
+                value="Started"
+                disabled={statusNumber > 2 ? true : false}
+              >
                 В процессе обучения
               </Select.Option>
-              <Select.Option key="Finished" value="Finished" disabled={statusNumber>3 ? true : false}>
+              <Select.Option
+                key="Finished"
+                value="Finished"
+                disabled={statusNumber > 3 ? true : false}
+              >
                 Закрыт
               </Select.Option>
             </Select>

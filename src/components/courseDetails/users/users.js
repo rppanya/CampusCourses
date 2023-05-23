@@ -1,8 +1,11 @@
-import Student from "./student";
-import { Button, Tabs, Modal } from "antd";
-import "../css/user.scss";
-import Teacher from "./teacher";
 import { useState } from "react";
+
+import { Button, Tabs, Modal } from "antd";
+
+import "../css/user.scss";
+
+import Student from "./student";
+import Teacher from "./teacher";
 import UsersSelectContainer from "../usersSelect/usersSelectContainer";
 import { teacherId } from "../usersSelect/usersSelect";
 
@@ -18,9 +21,8 @@ function Users(props) {
   const handleCancel = () => {
     setOpen(false);
   };
-  console.log(props)
   return (
-    <div style={{width: "100%"}}>
+    <div style={{ width: "100%" }}>
       <Tabs
         defaultActiveKey="1"
         type="card"
@@ -34,7 +36,11 @@ function Users(props) {
                 <Button
                   type="primary"
                   onClick={showModal}
-                  style={{ margin: "10px", display: props.isAdmin? "block" : "none" }}
+                  style={{
+                    margin: "10px",
+                    display:
+                      props.isAdmin || props.isMainTeacher ? "block" : "none",
+                  }}
                 >
                   Добавить преподавателя
                 </Button>
@@ -73,6 +79,7 @@ function Users(props) {
                     return (
                       <Student
                         isAdmin={props.isAdmin}
+                        isTeacher={props.isTeacher}
                         email={props.email}
                         student={element}
                         key={element.id}

@@ -1,15 +1,11 @@
+import { useState } from "react";
+
 import { Checkbox, Button, Tag, Modal, Form } from "antd";
 import FormItem from "antd/es/form/FormItem";
 import TextArea from "antd/es/input/TextArea";
-import { useState } from "react";
 
 function Notifications(props) {
   const [open, setOpen] = useState(false);
-  const [formValues, setFormValues] = useState({
-    text: "",
-    isImportant: false,
-  });
-
   const showModal = () => {
     setOpen(true);
   };
@@ -29,7 +25,7 @@ function Notifications(props) {
       <Button
         type="primary"
         onClick={showModal}
-        style={{ display: props.isAdmin ? "block" : "none" }}
+        style={{ display: props.isAdmin || props.isTeacher ? "block" : "none" }}
       >
         Создать уведомление
       </Button>
@@ -60,10 +56,8 @@ function Notifications(props) {
       >
         <Form
           form={form}
-          onChange={(values) => {
-            form.validateFields().then(() => {
-              setFormValues(values);
-            });
+          onChange={() => {
+            form.validateFields();
           }}
         >
           <FormItem

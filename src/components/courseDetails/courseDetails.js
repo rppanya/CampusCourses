@@ -1,4 +1,5 @@
 import { Row, Col, Card, Badge, Tabs } from "antd";
+
 import styles from "./css/courseDetails.module.scss";
 import ModalContainer from "../modals/modalContainer";
 import UsersContainer from "./users/usersContainer";
@@ -14,7 +15,7 @@ function CourseDetails(props) {
           <b>Основные данные курса</b>
         </Col>
         <Col className={styles.flex_right}>
-          {props.isAdmin ? (
+          {props.isAdmin || props.isTeacher ? (
             <ModalContainer
               createCourse={false}
               id={props.course.id}
@@ -32,7 +33,10 @@ function CourseDetails(props) {
             style={{ width: "100%" }}
             className={styles.card_grid}
           >
-            <CoursesStatusContainer></CoursesStatusContainer>
+            <CoursesStatusContainer
+              isTeacher={props.isTeacher}
+              isStudent={props.isStudent}
+            ></CoursesStatusContainer>
           </Card.Grid>
           <Card.Grid
             hoverable={false}
@@ -75,10 +79,7 @@ function CourseDetails(props) {
             <p>{props.course.studentsInQueueCount}</p>
           </Card.Grid>
         </Card>
-        <div
-          style={{ width: "100%" }}
-          className={styles.card_grid}
-        >
+        <div style={{ width: "100%" }} className={styles.card_grid}>
           <Tabs
             defaultActiveKey="1"
             type="card"
@@ -118,7 +119,7 @@ function CourseDetails(props) {
                 ),
                 children: (
                   <div>
-                    <NotificationsContainer />
+                    <NotificationsContainer isTeacher={props.isTeacher}/>
                   </div>
                 ),
               },
@@ -126,7 +127,11 @@ function CourseDetails(props) {
           />
         </div>
         <div style={{ margin: "20px" }}>
-          <UsersContainer></UsersContainer>
+          <UsersContainer
+            isMainTeacher={props.isMainTeacher}
+            isTeacher={props.isTeacher}
+            isStudent={props.isStudent}
+          ></UsersContainer>
         </div>
       </div>
     </div>

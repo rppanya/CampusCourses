@@ -1,16 +1,20 @@
-import { Layout, Menu } from "antd";
-import "antd/dist/reset.css";
-import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
-const { Header } = Layout;
+import { useNavigate } from "react-router-dom";
+import { Layout, Menu } from "antd";
+import swal from "sweetalert";
+
+import "antd/dist/reset.css";
 
 function Navbar(props) {
+
   const navigate = useNavigate();
   const [items, changeItems] = useState([]);
+  const { Header } = Layout;
   const token = localStorage.getItem("token")
     ? localStorage.getItem("token")
     : null;
+
   const authorizeItems = [
     {
       label: "Кампусные курсы",
@@ -19,11 +23,14 @@ function Navbar(props) {
     },
     { label: "Группы курсов", key: "/groups" },
     props.isStudent ? { label: "Мои курсы", key: "/courses/my" } : null,
-    props.isTeacher ? { label: "Преподаваемые курсы", key: "/teaching" } : null,
-    { label: props.email, key: "/profile" },
-    { label: "Выход", key: "logout", style: { marginLeft: "auto" } },
+    props.isTeacher
+      ? { label: "Преподаваемые курсы", key: "/courses/teaching" }
+      : null,
+    { label: props.email, key: "/profile", style: { marginLeft: "auto" } },
+    { label: "Выход", key: "logout" },
     { key: "/courses" },
   ];
+  
   const unauthorizeItems = [
     {
       label: "Кампусные курсы",
@@ -40,11 +47,9 @@ function Navbar(props) {
       (!token &&
         !unauthorizeItems.find((item) => item.key === currentLocation)) ||
       (token &&
-        !authorizeItems.find((item) => {
-          if (item !== null && item.key === currentLocation) {
-            return true;
-          }
-        }))
+        !authorizeItems.find(
+          (item) => item !== null && item.key === currentLocation
+        ))
     ) {
       navigate("/");
     }
@@ -70,10 +75,28 @@ function Navbar(props) {
       <Menu
         theme="dark"
         mode="horizontal"
-        defaultSelectedKeys={["Кампусные курсы"]}
+        defaultSelectedKeys={window.location.pathname}
         onClick={({ key }) => {
           if (key === "logout") {
-            props.logoutThunkCreator();
+            swal({
+              title: "Вы уверены что хотите выйти?",
+              icon: "warning",
+              buttons: {
+                cancel: "Отмена",
+                defeat: "Выйти",
+              },
+              dangerMode: true,
+            }).then((value) => {
+              switch (value) {
+                case "cancel":
+                  break;
+                case "defeat":
+                  props.logoutThunkCreator();
+                  break;
+                default:
+                  break;
+              }
+            });
           } else {
             navigate(key);
           }

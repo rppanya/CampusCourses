@@ -1,8 +1,10 @@
-import { Button, Card, Row, Col, Modal, Input, Space, Form } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { Button, Card, Row, Col, Modal, Input, Form } from "antd";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import FormItem from "antd/es/form/FormItem";
+import swal from "sweetalert";
 
 function Group(props) {
   const navigate = useNavigate();
@@ -22,17 +24,27 @@ function Group(props) {
   };
   const [form] = Form.useForm();
 
-  const [openDelete, setOpenDelete] = useState(false);
-
   const showModalDelete = () => {
-    setOpenDelete(true);
-  };
-  const handleOkDelete = () => {
-    props.deleteGroupThunkCreator(props.id);
-    setOpenDelete(false);
-  };
-  const handleCancelDelete = () => {
-    setOpenDelete(false);
+    swal({
+      title: "Вы уверены что хотите удалить группу?",
+      text: "Это действие невозможно будет отменить, после подтверждения группа будет удалена навсегда!",
+      icon: "warning",
+      buttons: {
+        cancel: "Отмена",
+        defeat: "Удалить",
+      },
+      dangerMode: true,
+    }).then((value) => {
+      switch (value) {
+        case "cancel":
+          break;
+        case "defeat":
+          props.deleteGroupThunkCreator(props.id);
+          break;
+        default:
+          break;
+      }
+    });
   };
 
   return (
@@ -100,24 +112,11 @@ function Group(props) {
         >
           <FormItem
             name="name"
-            rules={[{ required: true, message: "Введите название группы" }]}
+            rules={[{ required: true, message: "Введите название группы!" }]}
           >
             <Input placeholder="Название группы" defaultValue={props.title} />
           </FormItem>
         </Form>
-      </Modal>
-      <Modal
-        title="Удалить группу"
-        open={openDelete}
-        onOk={handleOkDelete}
-        onCancel={handleCancelDelete}
-        cancelText="Отмена"
-        okText="Да"
-      >
-        <h4>
-          Вы не сможете отменить это действие. Вы действительно хотите удалить
-          группу?
-        </h4>
       </Modal>
     </>
   );

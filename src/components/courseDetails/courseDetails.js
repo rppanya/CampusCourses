@@ -7,6 +7,11 @@ import CoursesStatusContainer from "./coursesStatus/coursesStatusContainer";
 import NotificationsContainer from "./notifications/notificationsContainer";
 
 function CourseDetails(props) {
+  const semester = {
+    Autumn: "Осенний",
+    Spring: "Весенний",
+  };
+
   return (
     <div className={styles.course_details}>
       <h2>{props.course.name}</h2>
@@ -52,7 +57,7 @@ function CourseDetails(props) {
             className={styles.card_grid}
           >
             <b>Семестр</b>
-            <p>{props.course.semester}</p>
+            <p>{semester[props.course.semester]}</p>
           </Card.Grid>
           <Card.Grid
             hoverable={false}
@@ -119,7 +124,7 @@ function CourseDetails(props) {
                 ),
                 children: (
                   <div>
-                    <NotificationsContainer isTeacher={props.isTeacher}/>
+                    <NotificationsContainer isTeacher={props.isTeacher} />
                   </div>
                 ),
               },
